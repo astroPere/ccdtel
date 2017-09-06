@@ -15,8 +15,8 @@ import subprocess
 from astropy import units as u
 from astropy.coordinates import Angle, SkyCoord
 
-import ccd_shell
-import telescope_shell
+import camera
+import telescope
 
 
 log = logging.getLogger()
@@ -89,9 +89,9 @@ def main(args):
     check_indi()
 
     #Define divices objects
-    camera = ccd_shell.Camera()
-    filterw = ccd_shell.Filter(filters)
-    telescope = telescope_shell.Telescope()
+    camera = camera.Camera()
+    filterw = camera.Filter(filters)
+    telescope = telescope.Telescope()
     
     #Connect devices to indiserver
     telescope.connect()
