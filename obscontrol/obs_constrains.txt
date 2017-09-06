@@ -1,0 +1,17 @@
+# OBSERVATION CONSTRAINS
+#
+# Fields description (by columns):
+# 1 - ID.
+# 2 - Solar elevation (+degrees below horizon)
+# 3 - Minimum airmass
+# 4 - Maximum airmass
+# 5 - Moon's phase allowed (%)
+# 6 - Maximum Moon elevation (degrees)
+# 7 - Minumum distance to the Moon (degrees)
+# 8 - Window (in JD)
+#-----------------------------------------------------------
+#    1     2  3   4  5  6  7  8
+#-----------------------------------------------------------
+p007o001 |18|1.0|2.0|0 |45|90|0
+p007o002 |18|1.0|1.5|25|25|0 |0
+p007o015 |18|1.0|1.8|50|60|30|0

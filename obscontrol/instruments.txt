@@ -1,0 +1,22 @@
+# INSTRUMENTS CONFIGURATION
+#
+# Fields description (by columns)
+# 1 - ID
+# 2 - Instrument name         ( MICCD )
+# 3 - Image type              ( Science/Dark/Bias/Flat)
+# 4 - Telescope tracking      ( Sideral / None / Custom )
+# 5 - Number of exposures
+# 6 - Exposure time
+# 7 - Binning                 ( 1x1 / 2x2 )
+# 8 - Defocus
+# 9 - Subframe                (centered in image field)
+# 10- Filter
+#-----------------------------------------------------------
+#   1      2      3       4      5   6   7   8   9   10
+#-----------------------------------------------------------
+p007i11 |MICCD|Science|Sidereal|1  |120|0  |1x1|2048|B
+p007i12 |MICCD|Science|Sidereal|5  |120|100|1x1|2048|V
+p007i13 |MICCD|Science|Sidereal|10 |120|0  |1x1|2048|R
+p000i01 |MICCD|Dark   |None    |1  |300|0  |1x1|2048|C
+p000i112|MICCD|Bias   |None    |1  |0  |0  |1x1|2048|C
+

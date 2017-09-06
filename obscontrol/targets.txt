@@ -1,0 +1,19 @@
+# TARGETS LIST
+#
+# Fields description (by columns)
+# 1 - ID
+# 2 - Source name
+# 3 - Coordinate name         ( Equatorial / Minor Planet)
+# 4 - Coordinate acronym      ( e / m )
+# 5 - Coordinate value
+# 6 - Coordinate epoch        (JD)
+# 7 - Binning                 ( 1x1 / 2x2 )
+# 8 - Defocus
+# 9 - Subframe                (centered in image field)
+# 10- Filter
+#----------------------------------------------------------------------
+#  1        2           3     4              5                     6
+#----------------------------------------------------------------------
+p001t58|IC5146    |Equatorial|e|21:53:24.00 0.0 +47:16:00.00 0.0|2000.0
+p002t01|GJ3998    |Equatorial|e|17:16:00.47 0.0 +11:03:21.35 0.0|2000.0
+p002t02|KIC8462852|Equatorial|e|20:06:15.45 0.0 +44:27:24.61 0.0|2000.0
