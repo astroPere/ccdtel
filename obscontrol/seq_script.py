@@ -8,15 +8,17 @@ Command INDI ccd with indi_setprop & indi_getprop
 
 """
 
-
+import collections
 import logging
 from time import sleep
 import subprocess
 from astropy import units as u
 from astropy.coordinates import Angle, SkyCoord
 
-import camera
-import telescope
+
+import sequence_parser as seqp
+import camera as ccd
+import telescope as tel
 
 
 log = logging.getLogger()
@@ -36,8 +38,8 @@ ch.setLevel(logging.INFO)
 ch.setFormatter(formatter1)
 log.addHandler(ch)
 
-#TODO: From config file??####################
-
+### TODO: From config file??#########################################
+#####################################################################
 rc = '\033[0m' #reset color
 cr = '\033[91m'#red
 cg ='\033[32m' #green
@@ -46,17 +48,38 @@ cb = '\033[94m'#blue
 cy = '\033[36m'#cyan
 cd = '\033[100m'#gray background
 
+# instruments config
+instr_file = ('instruments.txt')
+instr_conf = ('Instr',
+              'ID instrument img_type tracking exposures exp_time defoc binn roi ifilter')
 
-def_timeout = 2
+# targets config
+targets_file = ('targets.txt')
+targets_conf = ('Target',
+                'ID object coord_name coord_acr coord_value coord_epoch')
 
+# constrains config
+obsconst_file = ('obs_constrains.txt')
+obsconst_conf = ('ObsConst',
+                 'ID sun_elev min_air max_air moon_ph moon_elev moon_dist window')
+
+
+# filters/slot config
 filters =[{"name":"B", "slot":"1"},
           {"name":"V", "slot":"2"},
           {"name":"R", "slot":"3"},
           {"name":"I", "slot":"4"}]
 
-fits_path = 'fits/rawdata' #Absolute path!
+
+# images output path
+fits_path = '/home/pere/fits/rawdata/' #Absolute path!
+
+
+# sequence file
 seq_file  = 'seq_lines.txt'
-##############################################
+
+#####################################################################
+#####################################################################
 
 
 
@@ -66,10 +89,10 @@ def pr(s):
 
 
 def check_indi():
-    
+
     cmd = ['ps','--no-headers','-C','indiserver','-o','pid']
     log.debug('Checking if indiverver is running'+('').join(cmd))
-    
+
     try:
         subprocess.check_output(cmd)
         log.info ("{}***  INDISERVER is running   ***{}".format(cg,rc))
@@ -78,31 +101,55 @@ def check_indi():
     except:
         log.error(cr+"### INDISERVER IS NOT RUNNING ###"+rc)
         sys.exit()
-    
+
+
+def parsig_data_file(afile):
+
+    i = collections.namedtuple(*instr_conf)
+    instr_list=[]
+    with open(afile,'r') as f:
+
+        for line in f:
+            print(cr+line.strip('\n')+rc)
+            if not line.startswith('#'):
+                fields = line.strip('\n').split('|')
+                _name = fields[0].strip()
+                _values = [x.strip() for x in fields[1:]]
+
+                instr_list.append(i(_name,*_values))
+
+    for x in instruments_list:
+        print(x.ID)
+        pr(x)
+
+    #~ p = seqp.SequenceLine(line)
 
 
 
 
 def main(args):
 
+
+    parsig_data_file(inst_file)
+
     #First of all, check if indiserver is running
     check_indi()
 
     #Define divices objects
-    camera = camera.Camera()
-    filterw = camera.Filter(filters)
-    telescope = telescope.Telescope()
-    
+    camera = ccd.Camera()
+    filterw = ccd.Filter(filters)
+    telescope = tel.Telescope()
+
     #Connect devices to indiserver
     telescope.connect()
     camera.connect()
-    
+
     #Initial delay to ensure connections are ready
     sleep(2)
-    
-    
+
+
     filterw.getf
-    
+
 
     #Reading properties
     telescope.get_all_properties()
@@ -113,14 +160,14 @@ def main(args):
     vega = {'object': "Vega",
             'ra':  '18:37:02.255',
             'dec': '38:48:03.64' }
-            
+
     mel20 = {'object': "Mel20",
              'ra':'03h25m34.2s',
-             'dec':'+49d55m42s'}         
-            
+             'dec':'+49d55m42s'}
+
     m34 = {'object': "M34",
              'ra': '02h43m14.6s',
-             'dec': '+42:51:29'}         
+             'dec': '+42:51:29'}
 
 
     Vega = SkyCoord(vega['ra'],vega['dec'],unit=(u.hourangle, u.deg))
@@ -138,22 +185,22 @@ def main(args):
     telescope.set_park('Off') #TODO!!!
 
     #~ filterw.getf #is a property
-    
+
     with open(seq_file,'r') as f:
         pr('-------------- START EXEC -------------')
         for line in f:
             exec line
         pr('--------------  END EXEC --------------')
-    
+
     #Only for test
     telescope.set_track('Off')
 
-    
+
     telescope.set_park('On') #TODO!
-    
+
     telescope.disconnect()
     camera.disconnect()
-    
+
     return 0
 
 if __name__ == '__main__':

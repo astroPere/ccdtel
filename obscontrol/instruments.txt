@@ -7,8 +7,8 @@
 # 4 - Telescope tracking      ( Sideral / None / Custom )
 # 5 - Number of exposures
 # 6 - Exposure time
-# 7 - Binning                 ( 1x1 / 2x2 )
-# 8 - Defocus
+# 7 - Defocus
+# 8 - Binning                 ( 1x1 / 2x2 )
 # 9 - Subframe                (centered in image field)
 # 10- Filter
 #-----------------------------------------------------------
@@ -19,4 +19,3 @@ p007i12 |MICCD|Science|Sidereal|5  |120|100|1x1|2048|V
 p007i13 |MICCD|Science|Sidereal|10 |120|0  |1x1|2048|R
 p000i01 |MICCD|Dark   |None    |1  |300|0  |1x1|2048|C
 p000i112|MICCD|Bias   |None    |1  |0  |0  |1x1|2048|C
-

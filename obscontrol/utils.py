@@ -39,6 +39,25 @@ a_eval = ["indi_eval","-h",str(address),"-p",str(port)]
 log = logging.getLogger(__name__)
 
 
+
+
+class UtilsStandardError(StandardError):
+    pass
+
+
+class GetPropertyError(subprocess.CalledProcessError):
+    pass
+
+
+class SetPropertyError(subprocess.CalledProcessError):
+    pass
+
+
+class EvalPropertyError(subprocess.CalledProcessError):
+    pass
+
+
+
 class Utils(object):
 
     def __init__(self,device):
@@ -88,11 +107,10 @@ class Utils(object):
 
     def eval2(self,prop,check=False, verbose=False):
 
-        log.debug('Evaluation: {}'.format(cmd))
-        #~ TODO refine timeouts!
         v=""
         if verbose: v="o"
         cmd = ["-w"+v,"-t","30","\"{}.{}".format(str(self.d),prop)]
+        log.debug('Evaluation: {}'.format(cmd))
         state = (self.run(self._eval+cmd,check))
 
         return
@@ -104,6 +122,7 @@ class Utils(object):
         log.debug('Looking for latest file at {}'.format(path))
         list_of_files = glob(path+"/*.fits")
         latest_file = max(list_of_files, key=os.path.getctime)
+
         return latest_file
         
         
