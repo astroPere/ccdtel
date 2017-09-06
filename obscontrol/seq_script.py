@@ -87,6 +87,29 @@ def main(args):
 
     #First of all, check if indiserver is running
     check_indi()
+    
+    #Defining some targets:
+    vega = {'object': "Vega",
+            'ra':  '18:37:02.255',
+            'dec': '38:48:03.64' }
+            
+    mel20 = {'object': "Mel20",
+             'ra':'03h25m34.2s',
+             'dec':'+49d55m42s'}         
+            
+    m34 = {'object': "M34",
+             'ra': '02h43m14.6s',
+             'dec': '+42:51:29'}         
+
+
+    Vega = SkyCoord(vega['ra'],vega['dec'],unit=(u.hourangle, u.deg))
+    Mel20 = SkyCoord(mel20['ra'],mel20['dec'],unit=(u.hourangle, u.deg))
+    M34 = SkyCoord(m34['ra'],m34['dec'],unit=(u.hourangle, u.deg))
+
+    target1 = (Vega.ra.hour, Vega.dec.degree)
+    target2 = (Mel20.ra.hour, Mel20.dec.degree)
+    target3 = (M34.ra.hour, M34.dec.degree)
+    
 
     #Define divices objects
     camera = camera.Camera()
@@ -109,27 +132,7 @@ def main(args):
     sleep(1)
     camera.get_all_properties()
 
-    #Defining some targets:
-    vega = {'object': "Vega",
-            'ra':  '18:37:02.255',
-            'dec': '38:48:03.64' }
-            
-    mel20 = {'object': "Mel20",
-             'ra':'03h25m34.2s',
-             'dec':'+49d55m42s'}         
-            
-    m34 = {'object': "M34",
-             'ra': '02h43m14.6s',
-             'dec': '+42:51:29'}         
 
-
-    Vega = SkyCoord(vega['ra'],vega['dec'],unit=(u.hourangle, u.deg))
-    Mel20 = SkyCoord(mel20['ra'],mel20['dec'],unit=(u.hourangle, u.deg))
-    M34 = SkyCoord(m34['ra'],m34['dec'],unit=(u.hourangle, u.deg))
-
-    target1 = (Vega.ra.hour, Vega.dec.degree)
-    target2 = (Mel20.ra.hour, Mel20.dec.degree)
-    target3 = (M34.ra.hour, M34.dec.degree)
 
 
 
