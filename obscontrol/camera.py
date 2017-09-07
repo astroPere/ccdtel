@@ -147,9 +147,6 @@ class Camera(object):
         return
 
 
-
-
-
     def set_upload_mode(self, mode):
 
         log.info('Setting UPLOAD_MODE to {}.'.format(mode))
@@ -172,7 +169,7 @@ class Filter():
 
 
     def __init__(self,filters):
-        self.filters = filters #filters list from config file?
+        self.filters = filters
 
 
     def setf(self,name):
@@ -180,12 +177,9 @@ class Filter():
         log.info('Setting {} filter.'.format(name))
 
         slot = next(key for key,val in self.filters.items() if val==name)
-        Ut.set2("FILTER_SLOT.FILTER_SLOT_VALUE={}".format(
-                  self.filters[slot]))
+        Ut.set2("FILTER_SLOT.FILTER_SLOT_VALUE={}".format(self.filters[slot]))
         Ut.eval2("FILTER_SLOT.FILTER_SLOT_VALUE\"=={}".format(slot))
-                  #~ self.filters[slot]))
-        log.info("Done. Filter {}: '{}' in place.".format(
-                  slot,self.filters[slot]))
+        log.info("Done. Filter {}: '{}' in place.".format(slot,self.filters[slot]))
 
 
     @property
@@ -196,8 +190,6 @@ class Filter():
         try:
             cmd = "FILTER_SLOT.FILTER_SLOT_VALUE"
             slot = Ut.get2(cmd)
-            #~ flt = next(f for f in self.filters if f['slot']==slot)
-            #~ log.info("Filter {}: '{}' in place.".format(*flt.values()))
             log.info("Filter {}: '{}' in place.".format(
                     slot,self.filters[slot]))
             return self.filters[slot]
