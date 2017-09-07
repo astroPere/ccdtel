@@ -71,25 +71,22 @@ def check_indi():
         return False
 
 
-def parsig_data_file(afile):
-
-    i = collections.namedtuple(*instr_conf)
-    instr_list=[]
-    with open(afile,'r') as f:
-
+def parsig_data_file(data_file, data_conf):
+    
+    data_conf = getlist(data_conf)
+    i = collections.namedtuple(*data_conf)
+    data_list=[]
+    with open(data_file,'r') as f:
         for line in f:
-            print(cr+line.strip('\n')+rc)
             if not line.startswith('#'):
                 fields = line.strip('\n').split('|')
                 _name = fields[0].strip()
                 _values = [x.strip() for x in fields[1:]]
+                data_list.append(i(_name,*_values))
 
-                instr_list.append(i(_name,*_values))
-
-    for x in instruments_list:
-        print(x.ID)
-        pr(x)
-
+    return data_list
+    
+    
 
 def config():
     
@@ -109,6 +106,11 @@ def config():
 
     return config
 
+def getlist(option, sep=',', chars=None):
+    """Return a list from a ConfigParser option. By default, 
+       split on a comma and strip whitespaces."""
+    return [ chunk.strip(chars) for chunk in option.split(sep) ]
+
 
 
 def main(args):
@@ -122,11 +124,23 @@ def main(args):
     #Initialize general parameters
     exec_file = conf.get('general','exec_file')
     # instruments config
-    instr_file = conf.get('instruments','instr_file')
+    instr_file = conf.get('instruments','data_file')
+    instr_conf = conf.get('instruments','data_conf')
+    instr = parsig_data_file(instr_file,instr_conf)
+    for x in instr:pr(x)
+    pr('\n')
     # targets config
-    targets_file = conf.get('targets','targets_file')
+    targets_file = conf.get('targets','data_file')
+    targets_conf = conf.get('targets','data_conf')
+    targets = parsig_data_file(targets_file,targets_conf)
+    for x in targets:pr(x)
+    pr('\n')
     # constrains config
-    obsconstr_file = conf.get('obsconstrains','obsconstr_file')
+    obsconstr_file = conf.get('obsconstrains','data_file')
+    obsconstr_conf = conf.get('obsconstrains','data_conf')
+    obsconstr = parsig_data_file(obsconstr_file,obsconstr_conf)
+    for x in obsconstr:pr(x)
+    pr('\n')
     # filters??
     filters = dict(conf.items('filters'))
     # images output path
