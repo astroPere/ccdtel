@@ -37,8 +37,8 @@ Ut = utils.Utils(tel)
 class Telescope(object):
 
     
-    def __init__(self):
-        self.tel = str(tel)
+    def __init__(self, name, address, port, timeout):
+        self.tel = tel
         self.adress = address
         self.port = port
         self.timeout = 2.0

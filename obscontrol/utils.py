@@ -14,7 +14,8 @@ import subprocess
 import logging
 from time import sleep
 
-
+from astropy import units as u
+from astropy.coordinates import Angle, SkyCoord
 
 
 #TODO: From config file??####################
@@ -159,6 +160,12 @@ class Utils(object):
                         self.d,len(self.d_properties)))
 
         return self.d_properties
+
+
+    def parse_coord(self,coord):
+        
+        return
+
 
 
     #dummy funtion ;)

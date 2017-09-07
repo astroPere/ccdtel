@@ -39,9 +39,9 @@ Ut = utils.Utils(ccd)
 class Camera(object):
    
 
-    def __init__(self):
+    def __init__(self, name, address, port, timeout):
         
-        self.ccd = ccd
+        self.ccd = name
         self.adress = address
         self.port = port
         self.timeout = 2.0

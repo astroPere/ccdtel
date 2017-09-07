@@ -14,8 +14,9 @@ from time import sleep
 import subprocess
 from astropy import units as u
 from astropy.coordinates import Angle, SkyCoord
-
-
+import ConfigParser
+import io
+import sys
 import sequence_parser as seqp
 import camera as ccd
 import telescope as tel
@@ -97,10 +98,10 @@ def check_indi():
         subprocess.check_output(cmd)
         log.info ("{}***  INDISERVER is running   ***{}".format(cg,rc))
         print('='*60,'\n')
-        return
+        return True
     except:
         log.error(cr+"### INDISERVER IS NOT RUNNING ###"+rc)
-        sys.exit()
+        return False
 
 
 def parsig_data_file(afile):
@@ -122,18 +123,50 @@ def parsig_data_file(afile):
         print(x.ID)
         pr(x)
 
-    #~ p = seqp.SequenceLine(line)
 
+def config():
+    
+    config_file="config.cfg"
+    log.info("Loading configuration file: '{}'".format(config_file))
+    # Load the configuration file
+    with open(config_file) as f:
+        app_config = f.read()
+    config = ConfigParser.RawConfigParser(allow_no_value=True)
+    config.readfp(io.BytesIO(app_config))
+
+    # log all contents
+    for section in config.sections():
+        log.debug(section)
+        for options in config.options(section):
+            log.debug("    {}: {}".format(options, config.get(section, options)))
+    return config
 
 
 
 def main(args):
 
+    #read config file
+    conf = config()
+    #First of all, check if indiserver is running
+    if not check_indi():
+        sys.exit()
 
+    #Initialize telescope & camera
+    camera = ccd.Camera(conf.get('camera','name'),
+                        conf.get('camera','address'),
+                        conf.get('camera','port'),
+                        conf.get('camera','timeout'))
+    
+    telescope = tel.Telescope(conf.get('telescope','name'),
+                              conf.get('telescope','address'),
+                              conf.get('telescope','port'),
+                              conf.get('telescope','timeout'))
+    
+    
+    sys.exit()
     parsig_data_file(inst_file)
 
-    #First of all, check if indiserver is running
-    check_indi()
+
 
     #Define divices objects
     camera = ccd.Camera()
@@ -186,7 +219,7 @@ def main(args):
 
     #~ filterw.getf #is a property
 
-    with open(seq_file,'r') as f:
+    with open(exec_file,'r') as f:
         pr('-------------- START EXEC -------------')
         for line in f:
             exec line
