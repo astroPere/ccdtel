@@ -38,7 +38,7 @@ class Telescope(object):
 
     
     def __init__(self, name, address, port, timeout):
-        self.tel = tel
+        self.tel = name
         self.adress = address
         self.port = port
         self.timeout = 2.0
@@ -77,16 +77,18 @@ class Telescope(object):
     def target_coord(self,ra,dec):
 
         log.info('Slewing to  new target RA/DEC coordinates.')
-        log.info('  RA -> {}'.format(ra))
-        log.info('  DEC-> {}'.format(dec))
+        log.info('   RA -> {}'.format(ra))
+        log.info('   DEC-> {}'.format(dec))
         
         cmd = Ut._set+["{}.EQUATORIAL_EOD_COORD.RA={};DEC={}".format(
                            str(self.tel),str(ra),str(dec))]
         Ut.run(cmd)
-        sleep(2) #TODO: refine timeout for telescope hardware!
-        Ut.eval2("EQUATORIAL_EOD_COORD._STATE\"==1")
+        sleep(self.timeout) #TODO: refine timeout for telescope hardware!
 
-        log.info('Done. {} at target position.'.format(self.tel))
+        while Ut.eval2("EQUATORIAL_EOD_COORD._STATE\"==1") !=0:
+            sleep(self.timeout)
+
+        log.info('   Done. {} at target position.'.format(self.tel))
 
 
 
@@ -125,8 +127,8 @@ class Telescope(object):
         cmd1 = ["{}.TELESCOPE_PARK.PARK={};UNPARK={}".format(
                 self.tel,str(park),str(unpark))]
         cmd = Ut._set + cmd1
-        Ut.run(cmd)
-        sleep(1)
+        Ut.run(cmd)#TODO: refine timeout for telescope hardware!
+        sleep(self.timeout)
         if value=='On':Ut.eval2("EQUATORIAL_EOD_COORD._STATE\"==0")
         
         log.info("Done. {}  PARK = '{}'.".format(self.tel,park))

@@ -6,10 +6,10 @@
 # 3 - Coordinate name         ( Equatorial / Minor Planet)
 # 4 - Coordinate acronym      ( e / m )
 # 5 - Coordinate value
-# 6 - Coordinate epoch        (JD)
+# 6 - Coordinate equinox      (JD)
 #----------------------------------------------------------------------
 #  1        2           3     4              5             6
 #----------------------------------------------------------------------
-p001t58|IC5146    |Equatorial|e|21:53:24.00 +47:16:00.00|2000.0
-p002t01|GJ3998    |Equatorial|e|17:16:00.47 +11:03:21.35|2000.0
-p002t02|KIC8462852|Equatorial|e|20:06:15.45 +44:27:24.61|2000.0
+p001t58|IC5146    |Equatorial|e|21:53:24.00 +47:16:00.00|J2000.0
+p002t01|GJ3998    |Equatorial|e|17:16:00.47 +11:03:21.35|J2000.0
+p002t02|KIC8462852|Equatorial|e|20:06:15.45 +44:27:24.61|J2000.0

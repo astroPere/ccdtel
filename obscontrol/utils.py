@@ -109,12 +109,14 @@ class Utils(object):
     def eval2(self,prop,check=False, verbose=False):
 
         v=""
-        if verbose: v="o"
-        cmd = ["-w"+v,"-t","30","\"{}.{}".format(str(self.d),prop)]
+        if verbose: v="-o"
+        #~ cmd = ["-w"+v,"-t","30","\"{}.{}".format(str(self.d),prop)]
+        #~ cmd = ["-e","-t","30","\"{}.{}".format(str(self.d),prop)]
+        cmd = ["-t","30","\"{}.{}".format(str(self.d),prop)]
         log.debug('Evaluation: {}'.format(cmd))
         state = (self.run(self._eval+cmd,check))
 
-        return
+        return state
 
 
 

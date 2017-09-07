@@ -21,19 +21,10 @@ cb = '\033[94m'#blue
 cy = '\033[36m'#cyan
 
 
-#TODO: From config file??####################
-
-ccd = "CCD Simulator"
-port = '7624'
-address = '127.0.0.1'
-
-##############################################
-
-
 log = logging.getLogger(__name__)
 
-
-Ut = utils.Utils(ccd)
+#~ #TODO: best implementation
+Ut = utils.Utils("CCD Simulator")
 
 
 class Camera(object):
@@ -78,9 +69,9 @@ class Camera(object):
 
 
 
-    def expose(self,exp_time=5.0):
+    def expose(self,exp_time=5.0,frame=1, nframes=1):
 
-        log.info('Starting {}s. exposure.'.format(exp_time))
+        log.info('Starting {}s. exposure ({}/{}).'.format(exp_time,frame,nframes))
 
         path = Ut.get2("UPLOAD_SETTINGS.UPLOAD_DIR")
 
@@ -95,8 +86,8 @@ class Camera(object):
         log.debug('Running: {}'.format(' '.join(cmd2)))
         subprocess.check_call(cmd2)
 
-        log.info('Exposure finished.')
-        log.info('File {}{}{} succesfully created.'.format(cy,Ut.lastest_file(path),rc))
+        log.info('   Exposure finished.')
+        log.info('   File {}{}{} succesfully created.'.format(cy,Ut.lastest_file(path),rc))
 
         return
 
@@ -117,7 +108,7 @@ class Camera(object):
         log.info('Setting {} files path'.format(adir))
 
         Ut.set2("UPLOAD_SETTINGS.UPLOAD_DIR={}".format(adir))
-        sleep(1)
+        #~ sleep(1)#TODO: refine timeout for telescope hardware!
         log.debug('Done. Files path = {} '.format(adir))
 
         return
@@ -141,7 +132,7 @@ class Camera(object):
         log.info('Setting fits header OBJECT={}.'.format(name))
 
         Ut.set2("FITS_HEADER.FITS_OBJECT={}".format(name))
-        sleep(1)
+        #~ sleep(1)#TODO: refine timeout for telescope hardware!
         log.debug('Done. Fits header OBJECT={}'.format(name))
 
         return
@@ -168,18 +159,29 @@ class Camera(object):
 class Filter():
 
 
-    def __init__(self,filters):
+    def __init__(self, filters, name, address, port, timeout):
+        
         self.filters = filters
+        self.fltw = name
+        self.adress = address
+        self.port = port
+        self.timeout = 2.0
+        self.ccd_properties = {}
 
 
     def setf(self,name):
 
         log.info('Setting {} filter.'.format(name))
-
+        
+        
         slot = next(key for key,val in self.filters.items() if val==name)
-        Ut.set2("FILTER_SLOT.FILTER_SLOT_VALUE={}".format(self.filters[slot]))
-        Ut.eval2("FILTER_SLOT.FILTER_SLOT_VALUE\"=={}".format(slot))
-        log.info("Done. Filter {}: '{}' in place.".format(slot,self.filters[slot]))
+        Ut.set2("FILTER_SLOT.FILTER_SLOT_VALUE={}".format(slot))
+        sleep(self.timeout)
+        #~ log.info("++++"+Ut.eval2("FILTER_SLOT.FILTER_SLOT_VALUE\"=={}".format(slot), verbose = True))
+        while Ut.eval2("FILTER_SLOT.FILTER_SLOT_VALUE\"=={}".format(slot)) != 0:
+            log.info("changinf filter to:"+slot)
+            sleep(self.timeout)
+        log.info("   Done. Filter {}: '{}' in place.".format(slot,self.filters[slot]))
 
 
     @property

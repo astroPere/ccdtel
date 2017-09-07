@@ -6,4 +6,3 @@ obscontrol/shtel.log
 obscontrol/*.fits
 obscontrol/*.fit
 obscontrol/*.pyc
-#obscontrol/*.cfg
