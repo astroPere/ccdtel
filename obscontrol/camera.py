@@ -87,7 +87,7 @@ class Camera(object):
         cmd1 = Ut._set+["-t",str(exp_time+2),
                         "{}.CCD_EXPOSURE.CCD_EXPOSURE_VALUE={}".format(self.ccd,exp_time)]
 
-        cmd2 = Ut._get+["-t",str(exp_time+2),"{}.CCD1.CCD1".format(self.ccd)] #Client UPLOAD
+        cmd2 = Ut._get+["-t",str(exp_time+20),"{}.CCD1.CCD1".format(self.ccd)] #Client UPLOAD
 
         log.debug('Running: {}'.format(' '.join(cmd1)))
         subprocess.check_call(cmd1)
@@ -179,11 +179,13 @@ class Filter():
 
         log.info('Setting {} filter.'.format(name))
 
-        flt = next(f for f in self.filters if f['name']==name)
-        Ut.set2("FILTER_SLOT.FILTER_SLOT_VALUE={}".format(flt['slot']))
-        Ut.eval2("FILTER_SLOT.FILTER_SLOT_VALUE\"=={}".format(flt['slot']))
-
-        log.info("Done. Filter {}: '{}' in place.".format(*flt.values()))
+        slot = next(key for key,val in self.filters.items() if val==name)
+        Ut.set2("FILTER_SLOT.FILTER_SLOT_VALUE={}".format(
+                  self.filters[slot]))
+        Ut.eval2("FILTER_SLOT.FILTER_SLOT_VALUE\"=={}".format(slot))
+                  #~ self.filters[slot]))
+        log.info("Done. Filter {}: '{}' in place.".format(
+                  slot,self.filters[slot]))
 
 
     @property
@@ -194,9 +196,11 @@ class Filter():
         try:
             cmd = "FILTER_SLOT.FILTER_SLOT_VALUE"
             slot = Ut.get2(cmd)
-            flt = next(f for f in self.filters if f['slot']==slot)
-            log.info("Filter {}: '{}' in place.".format(*flt.values()))
-            return flt
+            #~ flt = next(f for f in self.filters if f['slot']==slot)
+            #~ log.info("Filter {}: '{}' in place.".format(*flt.values()))
+            log.info("Filter {}: '{}' in place.".format(
+                    slot,self.filters[slot]))
+            return self.filters[slot]
         except:
             log.warning('Filter UNKNOW!')
             return False

@@ -83,7 +83,7 @@ class Telescope(object):
         cmd = Ut._set+["{}.EQUATORIAL_EOD_COORD.RA={};DEC={}".format(
                            str(self.tel),str(ra),str(dec))]
         Ut.run(cmd)
-        sleep(1) #TODO: refine timeout for telescope hardware!
+        sleep(2) #TODO: refine timeout for telescope hardware!
         Ut.eval2("EQUATORIAL_EOD_COORD._STATE\"==1")
 
         log.info('Done. {} at target position.'.format(self.tel))

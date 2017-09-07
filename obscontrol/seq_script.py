@@ -22,6 +22,17 @@ import camera as ccd
 import telescope as tel
 
 
+rc = '\033[0m' #reset color
+cr = '\033[91m'#red
+cg ='\033[32m' #green
+cw = '\033[33m'#yellow
+cb = '\033[94m'#blue
+cy = '\033[36m'#cyan
+cd = '\033[100m'#gray background
+
+
+
+
 log = logging.getLogger()
 log.setLevel(logging.DEBUG)
 
@@ -38,50 +49,6 @@ ch = logging.StreamHandler()
 ch.setLevel(logging.INFO)
 ch.setFormatter(formatter1)
 log.addHandler(ch)
-
-### TODO: From config file??#########################################
-#####################################################################
-rc = '\033[0m' #reset color
-cr = '\033[91m'#red
-cg ='\033[32m' #green
-cw = '\033[33m'#yellow
-cb = '\033[94m'#blue
-cy = '\033[36m'#cyan
-cd = '\033[100m'#gray background
-
-# instruments config
-instr_file = ('instruments.txt')
-instr_conf = ('Instr',
-              'ID instrument img_type tracking exposures exp_time defoc binn roi ifilter')
-
-# targets config
-targets_file = ('targets.txt')
-targets_conf = ('Target',
-                'ID object coord_name coord_acr coord_value coord_epoch')
-
-# constrains config
-obsconst_file = ('obs_constrains.txt')
-obsconst_conf = ('ObsConst',
-                 'ID sun_elev min_air max_air moon_ph moon_elev moon_dist window')
-
-
-# filters/slot config
-filters =[{"name":"B", "slot":"1"},
-          {"name":"V", "slot":"2"},
-          {"name":"R", "slot":"3"},
-          {"name":"I", "slot":"4"}]
-
-
-# images output path
-fits_path = '/home/pere/fits/rawdata/' #Absolute path!
-
-
-# sequence file
-seq_file  = 'seq_lines.txt'
-
-#####################################################################
-#####################################################################
-
 
 
 
@@ -131,14 +98,15 @@ def config():
     # Load the configuration file
     with open(config_file) as f:
         app_config = f.read()
-    config = ConfigParser.RawConfigParser(allow_no_value=True)
-    config.readfp(io.BytesIO(app_config))
 
+    config = ConfigParser.SafeConfigParser(allow_no_value=True)
+    config.readfp(io.BytesIO(app_config))
     # log all contents
     for section in config.sections():
         log.debug(section)
         for options in config.options(section):
             log.debug("    {}: {}".format(options, config.get(section, options)))
+
     return config
 
 
@@ -150,7 +118,22 @@ def main(args):
     #First of all, check if indiserver is running
     if not check_indi():
         sys.exit()
-
+    
+    #Initialize general parameters
+    exec_file = conf.get('general','exec_file')
+    # instruments config
+    instr_file = conf.get('instruments','instr_file')
+    # targets config
+    targets_file = conf.get('targets','targets_file')
+    # constrains config
+    obsconstr_file = conf.get('obsconstrains','obsconstr_file')
+    # filters??
+    filters = dict(conf.items('filters'))
+    # images output path
+    fits_path = conf.get('images','download_path')
+    
+    
+    
     #Initialize telescope & camera
     camera = ccd.Camera(conf.get('camera','name'),
                         conf.get('camera','address'),
@@ -161,32 +144,20 @@ def main(args):
                               conf.get('telescope','address'),
                               conf.get('telescope','port'),
                               conf.get('telescope','timeout'))
-    
-    
-    sys.exit()
-    parsig_data_file(inst_file)
 
-
-
-    #Define divices objects
-    camera = ccd.Camera()
-    filterw = ccd.Filter(filters)
-    telescope = tel.Telescope()
+    filterw = ccd.Filter(filters)    
 
     #Connect devices to indiserver
     telescope.connect()
     camera.connect()
-
     #Initial delay to ensure connections are ready
     sleep(2)
-
-
     filterw.getf
+    camera.set_upload_mode("BOTH")
 
 
     #Reading properties
     telescope.get_all_properties()
-    sleep(1)
     camera.get_all_properties()
 
     #Defining some targets:
@@ -201,19 +172,31 @@ def main(args):
     m34 = {'object': "M34",
              'ra': '02h43m14.6s',
              'dec': '+42:51:29'}
+    
+    m92A = {'object': "M92_J2000",
+             'ra': '17h17m06.0s',
+             'dec':'+43d08m00s'}
+
+    m92B = {'object': "M92_EOD",
+             'ra': ' 17h17m38.6s ',
+             'dec':'+43d06m54s'}
 
 
     Vega = SkyCoord(vega['ra'],vega['dec'],unit=(u.hourangle, u.deg))
     Mel20 = SkyCoord(mel20['ra'],mel20['dec'],unit=(u.hourangle, u.deg))
     M34 = SkyCoord(m34['ra'],m34['dec'],unit=(u.hourangle, u.deg))
+    M92A = SkyCoord(m92A['ra'],m92A['dec'],unit=(u.hourangle, u.deg))
+    M92B = SkyCoord(m92B['ra'],m92B['dec'],unit=(u.hourangle, u.deg))
 
     target1 = (Vega.ra.hour, Vega.dec.degree)
     target2 = (Mel20.ra.hour, Mel20.dec.degree)
     target3 = (M34.ra.hour, M34.dec.degree)
+    target4 = (M92A.ra.hour, M92A.dec.degree)
+    target5 = (M92B.ra.hour, M92B.dec.degree)
 
 
 
-    camera.set_upload_mode("BOTH")
+
 
     telescope.set_park('Off') #TODO!!!
 
