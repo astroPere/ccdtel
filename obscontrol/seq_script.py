@@ -250,11 +250,13 @@ def track(t):
     t_coord = coord2EOD(atarget,atarget.equinox)
     log.info('Looking for cooordinates: {}'.format(t_coord))
     telescope.target_coord(*t_coord)
+    return
 
-
-def expose(i):
+def observe(i):
     
-    log.debug('Executing expose={}'.format(i))
+    log.debug('Executing observe={}'.format(i))
+    
+    track(t)
     
     i_instr = pstoi(i,'pi')
     ainstr = next(ins for ins in instruments if pstoi(ins.ID,'pi')==i_instr)
@@ -291,7 +293,7 @@ def parsing_exec_line(aline):
     
     _execline_conf = getlist(execline_conf)
     ex = namedtuple(*_execline_conf)
-    aline = [_line.strip() for _line in aline.split('|') if len(_line)>0]
+    aline = [_line.strip() for _line in aline.split(',') if len(_line)>0]
     aline = ex(*aline)
     log.debug('Parsed  line: {}'.format(aline))
     
