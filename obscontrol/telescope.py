@@ -77,8 +77,8 @@ class Telescope(object):
     def target_coord(self,ra,dec):
 
         log.info('Slewing to  new target RA/DEC coordinates.')
-        log.info('   RA -> {}'.format(ra))
-        log.info('   DEC-> {}'.format(dec))
+        log.info('    RA -> {}'.format(ra))
+        log.info('    DEC-> {}'.format(dec))
         
         cmd = Ut._set+["{}.EQUATORIAL_EOD_COORD.RA={};DEC={}".format(
                            str(self.tel),str(ra),str(dec))]
@@ -88,41 +88,36 @@ class Telescope(object):
         while Ut.eval2("EQUATORIAL_EOD_COORD._STATE\"==1") !=0:
             sleep(self.timeout)
 
-        log.info('   Done. {} at target position.'.format(self.tel))
+        log.info('    Done. {} at target position.'.format(self.tel))
 
 
 
-    def set_track(self,value='On'):
+    def track(self,value='On'):
         
-        log.info('Setting new TRACK state.')
+        log.info('Setting TRACK state to {}.'.format(value))
         
         if value == 'On':
             track, notrack = "On","Off"
         else:
             track, notrack = "Off","On"
-        
-        log.info("  TRACK -> '{}'".format(track))
-        
+              
         cmd1 = ["{}.TELESCOPE_TRACK_STATE.TRACK_ON={};TRACK_OFF={}".format(
                 self.tel,str(track),str(notrack))]
         cmd = Ut._set + cmd1
         Ut.run(cmd)
         
-        log.info("Done. {}  TRACK = '{}'.".format(self.tel,track))
+        log.info("    Done. {}  TRACK = '{}'.".format(self.tel,track))
         
         
         
-    def set_park(self,value='On'):
+    def park(self,value='On'):
         
-        log.info('Setting new PARK state.')
+        log.info('Setting PARK state to {}.'.format(value))
        
         if value == 'On':
             park, unpark = "On","Off"
         else:
             park, unpark = "Off","On"
-
-        log.info("  PARK   -> '{}'".format(park))
-        log.info("  UNPARK -> '{}'".format(unpark))
         
         cmd1 = ["{}.TELESCOPE_PARK.PARK={};UNPARK={}".format(
                 self.tel,str(park),str(unpark))]
@@ -131,7 +126,7 @@ class Telescope(object):
         sleep(self.timeout)
         if value=='On':Ut.eval2("EQUATORIAL_EOD_COORD._STATE\"==0")
         
-        log.info("Done. {}  PARK = '{}'.".format(self.tel,park))
+        log.info("    Done. {}  PARK = '{}'.".format(self.tel,park))
 
 
 

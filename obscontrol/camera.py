@@ -86,8 +86,8 @@ class Camera(object):
         log.debug('Running: {}'.format(' '.join(cmd2)))
         subprocess.check_call(cmd2)
 
-        log.info('   Exposure finished.')
-        log.info('   File {}{}{} succesfully created.'.format(cy,Ut.lastest_file(path),rc))
+        log.info('    Exposure finished.')
+        log.info('    File {}{}{} succesfully created.'.format(cy,Ut.lastest_file(path),rc))
 
         return
 
@@ -109,7 +109,7 @@ class Camera(object):
 
         Ut.set2("UPLOAD_SETTINGS.UPLOAD_DIR={}".format(adir))
         #~ sleep(1)#TODO: refine timeout for telescope hardware!
-        log.debug('Done. Files path = {} '.format(adir))
+        log.debug('    Done. Files path = {} '.format(adir))
 
         return
 
@@ -122,7 +122,7 @@ class Camera(object):
         log.info('Setting {} files prefix'.format(prefix))
 
         Ut.set2("UPLOAD_SETTINGS.UPLOAD_PREFIX={}".format(prefix))
-        log.debug('Done. Files prefix = {} '.format(prefix))
+        log.debug('    Done. Files prefix = {} '.format(prefix))
 
         return
 
@@ -133,7 +133,7 @@ class Camera(object):
 
         Ut.set2("FITS_HEADER.FITS_OBJECT={}".format(name))
         #~ sleep(1)#TODO: refine timeout for telescope hardware!
-        log.debug('Done. Fits header OBJECT={}'.format(name))
+        log.debug('    Done. Fits header OBJECT={}'.format(name))
 
         return
 
@@ -181,7 +181,7 @@ class Filter():
         while Ut.eval2("FILTER_SLOT.FILTER_SLOT_VALUE\"=={}".format(slot)) != 0:
             log.info("changinf filter to:"+slot)
             sleep(self.timeout)
-        log.info("   Done. Filter {}: '{}' in place.".format(slot,self.filters[slot]))
+        log.info("    Done. Filter {}: '{}' in place.".format(slot,self.filters[slot]))
 
 
     @property

@@ -12,10 +12,10 @@
 # 9 - Subframe                (centered in image field)
 # 10- Filter
 #-----------------------------------------------------------
-#   1      2      3       4      5   6   7   8   9   10
+# 1      2      3       4      5   6   7   8   9   10
 #-----------------------------------------------------------
-p001i11   |MICCD|Science|Sidereal|1  |  5|0  |1x1|2048|B
-p000t58i12|MICCD|Science|Sidereal|5  |  4|100|1x1|2048|V
-p002t02i10|MICCD|Science|Sidereal|10 |  2|0  |2x2|2048|R
-p000i01   |MICCD|Dark   |None    |1  |300|0  |1x1|2048|C
-p000t58   |MICCD|Bias   |None    |1  |0  |0  |1x1|2048|C
+p1i11 |MICCD|Science|Sidereal|1  |  5|0  |1x1|2048|B
+p1i12 |MICCD|Science|Sidereal|3  |  4|100|1x1|2048|V
+p2i10 |MICCD|Science|Sidereal|2  |  2|0  |2x2|2048|R
+p0i01 |MICCD|Dark   |None    |1  |300|0  |1x1|2048|C
+p0i02 |MICCD|Bias   |None    |1  |0  |0  |1x1|2048|C

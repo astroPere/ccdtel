@@ -10,7 +10,16 @@
 #camera.upload_prefix("_m34EOD_")
 #filterw.setf("I")
 #camera.expose(5)
-track( 'p001t58')
-expose('p000t58i12')
-track( 'p002t02')
-expose('p002t02i10')
+
+#track( 'p001t58')
+#expose('p000t58i12')
+#track( 'p002t02')
+#expose('p002t02i10')
+
+
+1|20170908|18:54:00|TRACK |p1s1t58
+2|20170908|18:53:30|EXPOSE|p1s2t58i12
+3|20170908|18:54:30|TRACK |p2s8t2
+4|20170908|18:54:15|EXPOSE|p2s8t2i10
+
+

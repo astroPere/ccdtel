@@ -7,8 +7,9 @@ from __future__ import print_function
 Command INDI ccd with indi_setprop & indi_getprop
 
 """
-import datetime
-import collections
+#~ import datetime
+from datetime import datetime
+from collections import namedtuple
 import re
 import logging
 from time import sleep
@@ -34,7 +35,8 @@ cd = '\033[100m'#gray background
 log = logging.getLogger()
 log.setLevel(logging.DEBUG)
 
-formatter  = logging.Formatter('%(asctime)s| %(levelname)-7s| %(message)s')
+#~ formatter  = logging.Formatter('%(asctime)s| %(levelname)-7s| %(message)s')
+formatter  = logging.Formatter("[%(filename)s:%(lineno)s - %(funcName)s] %(message)s")
 #~ formatter1 = logging.Formatter('%(asctime)s > %(message)s')
 formatter1 = logging.Formatter(' > %(message)s')
 #File logger
@@ -71,10 +73,10 @@ def config():
     return config
     
     
-def parsig_data_file(data_file, data_conf):
+def parsing_config_file(data_file, data_conf):
     
     data_conf = getlist(data_conf)
-    i = collections.namedtuple(*data_conf)
+    i = namedtuple(*data_conf)
     data_list=[]
     with open(data_file,'r') as f:
         for line in f:
@@ -103,21 +105,25 @@ def getlist(option, sep=',', chars=None):
 conf = config()
 #Initialize general parameters
 exec_file = conf.get('general','exec_file')
+execline_conf = conf.get('general', 'exec_conf')
+
 # instruments config
 instr_file = conf.get('instruments','data_file')
 instr_conf = conf.get('instruments','data_conf')
-instruments = parsig_data_file(instr_file,instr_conf)
+instruments = parsing_config_file(instr_file,instr_conf)
 
 # targets config
 targets_file = conf.get('targets','data_file')
 targets_conf = conf.get('targets','data_conf')
-
-targets = parsig_data_file(targets_file,targets_conf)
+targets = parsing_config_file(targets_file,targets_conf)
 
 # constrains config
 obsconstr_file = conf.get('obsconstrains','data_file')
 obsconstr_conf = conf.get('obsconstrains','data_conf')
-obsconstrains = parsig_data_file(obsconstr_file,obsconstr_conf)
+obsconstrains = parsing_config_file(obsconstr_file,obsconstr_conf)
+
+
+
 
 filters = dict(conf.items('filters'))
 # images output path
@@ -236,7 +242,9 @@ def pstoi(toi,text_pattern):
 
 
 def track(t):
-
+    
+    log.debug('Executing track={}'.format(t))
+    t = pstoi(t,'pt')
     atarget = next(trg for trg in targets if trg.ID==t)
     #~ t_ra, t_dec = coord2EOD(atarget,atarget.equinox)
     t_coord = coord2EOD(atarget,atarget.equinox)
@@ -245,10 +253,13 @@ def track(t):
 
 
 def expose(i):
-
-    ainstr = next(ins for ins in instruments if ins.ID==i)
-    targ_instr = pstoi(i,'t')
-    obj_name = next(trg.obj_name for trg in targets if pstoi(trg.ID,'t')==targ_instr)
+    
+    log.debug('Executing expose={}'.format(i))
+    
+    i_instr = pstoi(i,'pi')
+    ainstr = next(ins for ins in instruments if pstoi(ins.ID,'pi')==i_instr)
+    i_targ = pstoi(i,'pt')
+    obj_name = next(trg.obj_name for trg in targets if pstoi(trg.ID,'pt')==i_targ)
     
     camera.upload_object(obj_name)
     camera.upload_path(fits_path+obj_name+"/")
@@ -262,24 +273,56 @@ def expose(i):
 
 def coord2EOD(atarget,equinox):
     
+    log.debug('Parsing EOD coords. targ={}'.format(atarget))
     #coordinates from targets file
     atarget = SkyCoord(atarget.coord_value,
                        unit=(u.hourangle, u.deg),
                        equinox=atarget.equinox)
     #coordinates EOD (UTC now)
-    otarget = atarget.transform_to(FK5(equinox=datetime.datetime.utcnow()))
-
+    otarget = atarget.transform_to(FK5(equinox=datetime.utcnow()))
+    log.debug('Returned coords.RA:{} DEC:{}'.format(
+              otarget.ra.hour, otarget.dec.degree))
     return otarget.ra.hour, otarget.dec.degree
   
   
-  
+def parsing_exec_line(aline):
+
+    log.debug('Parsing line: {}'.format(aline))
+    
+    _execline_conf = getlist(execline_conf)
+    ex = namedtuple(*_execline_conf)
+    aline = [_line.strip() for _line in aline.split('|') if len(_line)>0]
+    aline = ex(*aline)
+    log.debug('Parsed  line: {}'.format(aline))
+    
+    return aline
+
+
+def exec_wait(edatetime):
+    
+    log.debug('Executing wait for {}'.format(edatetime))
+    
+    exectime = datetime.strptime(edatetime,'%Y%m%d%H:%M:%S')
+    delay = int((exectime-datetime.utcnow()).total_seconds())
+    #TODO: Should MIN/MAX allowed delay be configured??
+    if -60 < delay < 60:#in seconds!
+        log.info('    Line in time, {}s delayed'.format(delay))
+        return True 
+    elif 28800 > delay > 60:#in seconds (28800s = 8 hours!)
+        log.info('... Waiting {}s till {}'.format(delay,exectime))
+        while exectime >= datetime.utcnow():
+            sleep(1)
+        return True
+    else: 
+        log.warning(cw+'    Skipping line due to a {}s delay.'.format(delay)+rc)
+        return False
+    
 
 def main(args):
 
     #~ #First of all, check if indiserver is running
     if not check_indi():
         sys.exit()
-
     #Connect devices to indiserver
     telescope.connect()
     camera.connect()
@@ -287,33 +330,33 @@ def main(args):
     sleep(2)
     #Setting camera upload mode
     camera.set_upload_mode("BOTH")
-    #Reading properties
-    telescope.get_all_properties()
-    camera.get_all_properties()
-    #Unpark telescope
-    telescope.set_park('Off') #TODO!!!
-    #Getting present filter
-    filterw.getf
+    #~ #Reading properties
+    #~ telescope.get_all_properties()
+    #~ camera.get_all_properties()
+    #~ #Unpark telescope
+    #~ telescope.park('Off') #TODO!!!
+    #~ #Getting present filter
+    #~ filterw.getf
 
 #*******************************************************************
 
-
+    lcount = 0
     with open(exec_file,'r') as f:
         for line in f:
-             if not line.startswith('#'):
-                line=line.strip('\n')
-                log.info('Executing line: {}'.format(line))
-                exec line
-
-    #~ target = next(trg for trg in targets if target.ID==t)
-    #~ target.coord_value)
-
-
-
+             if len(line.strip())>0 and not line.startswith('#'):
+                lcount += 1
+                xline=line.strip('\n').strip()
+                xline = parsing_exec_line(xline)
+                log.info("Executing line #{}:  {} {}".format(
+                         lcount,xline.function,xline.pti.lower()))                
+                #~ #waiting for execution date/time
+                if exec_wait(xline.edate+xline.etime):
+                    exec "{}('{}')".format(xline.function.lower(),xline.pti.lower())
+                
 
 #*******************************************************************
 
-    telescope.set_park('On') #TODO!
+    telescope.park('On') #TODO eval park state!
 
     telescope.disconnect()
     camera.disconnect()
