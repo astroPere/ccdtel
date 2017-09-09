@@ -7,7 +7,7 @@ from __future__ import print_function
 Command INDI ccd with indi_setprop & indi_getprop
 
 """
-#~ import datetime
+#~ import hashlib
 from datetime import datetime
 from collections import namedtuple
 import re
@@ -96,6 +96,29 @@ def getlist(option, sep=',', chars=None):
 
 
 
+def hashfile(path, blocksize = 65536):
+    afile = open(path, 'rb')
+    hasher = hashlib.md5()
+    buf = afile.read(blocksize)
+    while len(buf) > 0:
+        hasher.update(buf)
+        buf = afile.read(blocksize)
+    afile.close()
+    return hasher.hexdigest()
+
+
+
+
+def md5Checksum(filePath):
+    with open(filePath, 'rb') as fh:
+        m = hashlib.md5()
+        while True:
+            data = fh.read(8192)
+            if not data:
+                break
+            m.update(data)
+        return m.hexdigest()
+
 
 
 #First of all, check if indiserver is running
@@ -131,7 +154,7 @@ fits_path = conf.get('images','download_path')
 
 
 
-#Initialize telescope & camera
+#Initialize telescope, camera, filterwheel
 camera = ccd.Camera(conf.get('camera','name'),
                     conf.get('camera','address'),
                     conf.get('camera','port'),
@@ -147,56 +170,6 @@ filterw = ccd.Filter(filters,
                      conf.get('filterw','address'),
                      conf.get('filterw','port'),
                      conf.get('filterw','timeout'))
-
-
-    #~ #Defining some targets:
-    #~ vega = {'object': "Vega",
-            #~ 'ra':  '18:37:02.255',
-            #~ 'dec': '38:48:03.64' }
-
-    #~ mel20 = {'object': "Mel20",
-             #~ 'ra':'03h25m34.2s',
-             #~ 'dec':'+49d55m42s'}
-
-    #~ m34 = {'object': "M34",
-             #~ 'ra': '02h43m14.6s',
-             #~ 'dec': '+42:51:29'}
-    
-    #~ m92A = {'object': "M92_J2000",
-             #~ 'ra': '17h17m06.0s',
-             #~ 'dec':'+43d08m00s'}
-
-    #~ m92B = {'object': "M92_EOD",
-             #~ 'ra': ' 17h17m38.6s ',
-             #~ 'dec':'+43d06m54s'}
-
-
-    #~ Vega = SkyCoord(vega['ra'],vega['dec'],unit=(u.hourangle, u.deg))
-    #~ Mel20 = SkyCoord(mel20['ra'],mel20['dec'],unit=(u.hourangle, u.deg))
-    #~ M34 = SkyCoord(m34['ra'],m34['dec'],unit=(u.hourangle, u.deg))
-    #~ M92A = SkyCoord(m92A['ra'],m92A['dec'],unit=(u.hourangle, u.deg))
-    #~ M92B = SkyCoord(m92B['ra'],m92B['dec'],unit=(u.hourangle, u.deg))
-
-    #~ target1 = (Vega.ra.hour, Vega.dec.degree)
-    #~ target2 = (Mel20.ra.hour, Mel20.dec.degree)
-    #~ target3 = (M34.ra.hour, M34.dec.degree)
-    #~ target4 = (M92A.ra.hour, M92A.dec.degree)
-    #~ target5 = (M92B.ra.hour, M92B.dec.degree)
-
-
-
-
-
-
-    #~ with open(exec_file,'r') as f:
-        #~ pr('-------------- START EXEC -------------')
-        #~ for line in f:
-            #~ exec line
-        #~ pr('--------------  END EXEC --------------')
-
-
-
-
 
 
 
