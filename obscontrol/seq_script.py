@@ -36,7 +36,7 @@ log = logging.getLogger()
 log.setLevel(logging.DEBUG)
 
 #~ formatter  = logging.Formatter('%(asctime)s| %(levelname)-7s| %(message)s')
-formatter  = logging.Formatter("[%(filename)s:%(lineno)s - %(funcName)s] %(message)s")
+formatter  = logging.Formatter("[%(asctime)s|%(filename)s:%(lineno)s - %(funcName)s] %(message)s")
 #~ formatter1 = logging.Formatter('%(asctime)s > %(message)s')
 formatter1 = logging.Formatter(' > %(message)s')
 #File logger
@@ -253,12 +253,13 @@ def track(t):
     return
 
 def observe(i):
-    
+    pr(i)
     log.debug('Executing observe={}'.format(i))
-    
+    t = pstoi(i,'pt')
     track(t)
     
     i_instr = pstoi(i,'pi')
+    pr(i_instr)
     ainstr = next(ins for ins in instruments if pstoi(ins.ID,'pi')==i_instr)
     i_targ = pstoi(i,'pt')
     obj_name = next(trg.obj_name for trg in targets if pstoi(trg.ID,'pt')==i_targ)
@@ -311,7 +312,7 @@ def exec_wait(edatetime):
         log.info('    Line in time, {}s delayed'.format(delay))
         return True 
     elif 28800 > delay > 60:#in seconds (28800s = 8 hours!)
-        log.info('... Waiting {}s till {}'.format(delay,exectime))
+        log.info('... Waiting {}s -> {}'.format(delay,exectime))
         while exectime >= datetime.utcnow():
             sleep(1)
         return True
@@ -328,17 +329,18 @@ def main(args):
     #Connect devices to indiserver
     telescope.connect()
     camera.connect()
+    filterw.connect()
     #Initial delay to ensure connections are ready
     sleep(2)
     #Setting camera upload mode
     camera.set_upload_mode("BOTH")
-    #~ #Reading properties
-    #~ telescope.get_all_properties()
-    #~ camera.get_all_properties()
-    #~ #Unpark telescope
-    #~ telescope.park('Off') #TODO!!!
-    #~ #Getting present filter
-    #~ filterw.getf
+    #Reading properties
+    telescope.get_all_properties()
+    camera.get_all_properties()
+    #Unpark telescope
+    telescope.park('Off') #TODO!!!
+    #Getting present filter
+    filterw.getf
 
 #*******************************************************************
 
@@ -355,13 +357,17 @@ def main(args):
                 if exec_wait(xline.edate+xline.etime):
                     exec "{}('{}')".format(xline.function.lower(),xline.pti.lower())
                 
-
+    #~ sleep(2)
 #*******************************************************************
 
     telescope.park('On') #TODO eval park state!
 
     telescope.disconnect()
+    sleep(1)
     camera.disconnect()
+    sleep(1)
+    filterw.disconnect()
+    sleep(1)
 
 
     

@@ -1,0 +1,542 @@
+[2017-09-09 01:52:00,471|seq_script.py:60 - config] Loading configuration file: 'config.cfg'
+[2017-09-09 01:52:00,472|seq_script.py:69 - config] general
+[2017-09-09 01:52:00,472|seq_script.py:71 - config]     exec_file: exec_lines.txt
+[2017-09-09 01:52:00,472|seq_script.py:71 - config]     exec_conf: execline, num edate etime function pti
+[2017-09-09 01:52:00,472|seq_script.py:69 - config] indiserver
+[2017-09-09 01:52:00,472|seq_script.py:71 - config]     port: 7624
+[2017-09-09 01:52:00,473|seq_script.py:71 - config]     address: 127.0.0.1
+[2017-09-09 01:52:00,473|seq_script.py:69 - config] camera
+[2017-09-09 01:52:00,473|seq_script.py:71 - config]     name: FLI CCD
+[2017-09-09 01:52:00,473|seq_script.py:71 - config]     address: 127.0.0.1
+[2017-09-09 01:52:00,473|seq_script.py:71 - config]     port: 7624
+[2017-09-09 01:52:00,473|seq_script.py:71 - config]     driver: indi_fli_ccd
+[2017-09-09 01:52:00,473|seq_script.py:71 - config]     timeout: 60.0
+[2017-09-09 01:52:00,473|seq_script.py:69 - config] telescope
+[2017-09-09 01:52:00,473|seq_script.py:71 - config]     name: Losmandy Gemini
+[2017-09-09 01:52:00,473|seq_script.py:71 - config]     address: 127.0.0.1
+[2017-09-09 01:52:00,474|seq_script.py:71 - config]     port: 7624
+[2017-09-09 01:52:00,474|seq_script.py:71 - config]     driver: indi_lx200gemini
+[2017-09-09 01:52:00,474|seq_script.py:71 - config]     timeout: 60.0
+[2017-09-09 01:52:00,474|seq_script.py:69 - config] filterw
+[2017-09-09 01:52:00,474|seq_script.py:71 - config]     name: FLI CFW
+[2017-09-09 01:52:00,474|seq_script.py:71 - config]     address: 127.0.0.1
+[2017-09-09 01:52:00,474|seq_script.py:71 - config]     port: 7624
+[2017-09-09 01:52:00,474|seq_script.py:71 - config]     driver: indi_fli_wheel
+[2017-09-09 01:52:00,474|seq_script.py:71 - config]     timeout: 60.0
+[2017-09-09 01:52:00,474|seq_script.py:69 - config] filters
+[2017-09-09 01:52:00,475|seq_script.py:71 - config]     1: L
+[2017-09-09 01:52:00,475|seq_script.py:71 - config]     2: R
+[2017-09-09 01:52:00,475|seq_script.py:71 - config]     3: G
+[2017-09-09 01:52:00,475|seq_script.py:71 - config]     4: B
+[2017-09-09 01:52:00,475|seq_script.py:71 - config]     5: HA
+[2017-09-09 01:52:00,475|seq_script.py:71 - config]     6: P
+[2017-09-09 01:52:00,475|seq_script.py:71 - config]     7: C
+[2017-09-09 01:52:00,475|seq_script.py:69 - config] guider
+[2017-09-09 01:52:00,475|seq_script.py:71 - config]     name: Guider Simulator
+[2017-09-09 01:52:00,475|seq_script.py:71 - config]     driver: indi_simulator_guider
+[2017-09-09 01:52:00,475|seq_script.py:71 - config]     timeout: 2.0
+[2017-09-09 01:52:00,476|seq_script.py:71 - config]     phd2: on
+[2017-09-09 01:52:00,476|seq_script.py:69 - config] images
+[2017-09-09 01:52:00,476|seq_script.py:71 - config]     upload_mode: BOTH
+[2017-09-09 01:52:00,476|seq_script.py:71 - config]     download_path: /home/pere/fits/rawdata/
+[2017-09-09 01:52:00,476|seq_script.py:71 - config]     extension: .fits
+[2017-09-09 01:52:00,476|seq_script.py:71 - config]     imr_sufix: imr_xxx
+[2017-09-09 01:52:00,476|seq_script.py:71 - config]     cbs_sufix: cbs_xxx
+[2017-09-09 01:52:00,476|seq_script.py:71 - config]     cth_sufix: cth_xxx
+[2017-09-09 01:52:00,476|seq_script.py:71 - config]     cfl_sufix: cfl_xxx
+[2017-09-09 01:52:00,476|seq_script.py:69 - config] instruments
+[2017-09-09 01:52:00,476|seq_script.py:71 - config]     file_path: 
+[2017-09-09 01:52:00,477|seq_script.py:71 - config]     data_file: instruments.txt
+[2017-09-09 01:52:00,477|seq_script.py:71 - config]     data_conf: instr, ID instrument img_type tracking exposures exp_time defoc binn roi ifilter
+[2017-09-09 01:52:00,477|seq_script.py:69 - config] targets
+[2017-09-09 01:52:00,477|seq_script.py:71 - config]     file_path: 
+[2017-09-09 01:52:00,477|seq_script.py:71 - config]     data_file: targets.txt
+[2017-09-09 01:52:00,477|seq_script.py:71 - config]     data_conf: target, ID obj_name coord_name coord_acr coord_value equinox
+[2017-09-09 01:52:00,477|seq_script.py:69 - config] obsconstrains
+[2017-09-09 01:52:00,477|seq_script.py:71 - config]     file_path: none
+[2017-09-09 01:52:00,478|seq_script.py:71 - config]     data_file: obs_constrains.txt
+[2017-09-09 01:52:00,478|seq_script.py:71 - config]     data_conf: obsconst, ID sun_elev min_air max_air moon_ph moon_elev moon_dist window
+[2017-09-09 01:52:00,482|seq_script.py:218 - check_indi] Checking if indiverver is runningps--no-headers-Cindiserver-opid
+[2017-09-09 01:52:00,504|seq_script.py:222 - check_indi] [32m***  INDISERVER is running   ***[0m
+[2017-09-09 01:52:00,504|telescope.py:50 - connect] Connecting Losmandy Gemini to indiserver.
+[2017-09-09 01:52:00,504|utils.py:93 - get2] Getting "Losmandy Gemini.CONNECTION.CONNECT._STATE" properties
+[2017-09-09 01:52:00,504|utils.py:76 - run] Running: indi_getprop -h 127.0.0.1 -p 7624 Losmandy Gemini.CONNECTION.CONNECT._STATE
+[2017-09-09 01:52:00,513|utils.py:103 - set2] Setting: Losmandy Gemini.CONNECTION.CONNECT=On;DISCONNECT=Off
+[2017-09-09 01:52:00,513|utils.py:76 - run] Running: indi_setprop -t 30 -h 127.0.0.1 -p 7624 Losmandy Gemini.CONNECTION.CONNECT=On;DISCONNECT=Off
+[2017-09-09 01:52:00,524|utils.py:118 - eval2] Evaluation: ['-wo', '-t', '30', '"Losmandy Gemini.CONNECTION._STATE"==1']
+[2017-09-09 01:52:00,524|utils.py:76 - run] Running: indi_eval -h 127.0.0.1 -p 7624 -wo -t 30 "Losmandy Gemini.CONNECTION._STATE"==1
+[2017-09-09 01:52:00,662|telescope.py:59 - connect] [32m***  Losmandy Gemini  Connected!  ***[0m
+[2017-09-09 01:52:00,663|camera.py:46 - connect] Connecting FLI CCD to indiserver.
+[2017-09-09 01:52:00,663|utils.py:93 - get2] Getting "FLI CCD.CONNECTION.CONNECT._STATE" properties
+[2017-09-09 01:52:00,663|utils.py:76 - run] Running: indi_getprop -h 127.0.0.1 -p 7624 FLI CCD.CONNECTION.CONNECT._STATE
+[2017-09-09 01:52:00,670|utils.py:103 - set2] Setting: FLI CCD.CONNECTION.CONNECT=On;DISCONNECT=Off
+[2017-09-09 01:52:00,670|utils.py:76 - run] Running: indi_setprop -t 30 -h 127.0.0.1 -p 7624 FLI CCD.CONNECTION.CONNECT=On;DISCONNECT=Off
+[2017-09-09 01:52:00,677|utils.py:118 - eval2] Evaluation: ['-wo', '-t', '30', '"FLI CCD.CONNECTION._STATE"==1']
+[2017-09-09 01:52:00,678|utils.py:76 - run] Running: indi_eval -h 127.0.0.1 -p 7624 -wo -t 30 "FLI CCD.CONNECTION._STATE"==1
+[2017-09-09 01:52:00,693|camera.py:55 - connect] [32m***  FLI CCD  Connected!  ***[0m
+[2017-09-09 01:52:00,693|camera.py:174 - connect] Connecting FLI CFW to indiserver.
+[2017-09-09 01:52:00,693|utils.py:93 - get2] Getting "FLI CFW.CONNECTION.CONNECT._STATE" properties
+[2017-09-09 01:52:00,694|utils.py:76 - run] Running: indi_getprop -h 127.0.0.1 -p 7624 FLI CFW.CONNECTION.CONNECT._STATE
+[2017-09-09 01:52:00,699|utils.py:103 - set2] Setting: FLI CFW.CONNECTION.CONNECT=On;DISCONNECT=Off
+[2017-09-09 01:52:00,700|utils.py:76 - run] Running: indi_setprop -t 30 -h 127.0.0.1 -p 7624 FLI CFW.CONNECTION.CONNECT=On;DISCONNECT=Off
+[2017-09-09 01:52:00,705|utils.py:118 - eval2] Evaluation: ['-wo', '-t', '30', '"FLI CFW.CONNECTION._STATE"==1']
+[2017-09-09 01:52:00,706|utils.py:76 - run] Running: indi_eval -h 127.0.0.1 -p 7624 -wo -t 30 "FLI CFW.CONNECTION._STATE"==1
+[2017-09-09 01:52:02,822|camera.py:183 - connect] [32m***  FLI CFW  Connected!  ***[0m
+[2017-09-09 01:52:04,824|camera.py:144 - set_upload_mode] Setting UPLOAD_MODE to BOTH.
+[2017-09-09 01:52:04,825|utils.py:76 - run] Running: indi_setprop -t 30 -h 127.0.0.1 -p 7624 FLI CCD.UPLOAD_MODE.UPLOAD_CLIENT=Off;UPLOAD_LOCAL=Off;UPLOAD_BOTH=On
+[2017-09-09 01:52:04,843|utils.py:138 - get_all_properties] Getting all Losmandy Gemini properties.
+[2017-09-09 01:52:04,844|utils.py:76 - run] Running: indi_getprop -h 127.0.0.1 -p 7624 -t 10 Losmandy Gemini.*.*
+[2017-09-09 01:52:15,060|utils.py:153 - get_all_properties] CONNECTION
+[2017-09-09 01:52:15,060|utils.py:161 - get_all_properties]    DISCONNECT = Off
+[2017-09-09 01:52:15,060|utils.py:161 - get_all_properties]    CONNECT = On
+[2017-09-09 01:52:15,060|utils.py:153 - get_all_properties] DRIVER_INFO
+[2017-09-09 01:52:15,061|utils.py:161 - get_all_properties]    DRIVER_EXEC = indi_lx200gemini
+[2017-09-09 01:52:15,061|utils.py:161 - get_all_properties]    DRIVER_NAME = LX200 Generic
+[2017-09-09 01:52:15,061|utils.py:161 - get_all_properties]    DRIVER_INTERFACE = 5
+[2017-09-09 01:52:15,061|utils.py:161 - get_all_properties]    DRIVER_VERSION = 1.3
+[2017-09-09 01:52:15,061|utils.py:153 - get_all_properties] DEBUG
+[2017-09-09 01:52:15,061|utils.py:161 - get_all_properties]    DISABLE = On
+[2017-09-09 01:52:15,061|utils.py:161 - get_all_properties]    ENABLE = Off
+[2017-09-09 01:52:15,061|utils.py:153 - get_all_properties] SIMULATION
+[2017-09-09 01:52:15,061|utils.py:161 - get_all_properties]    DISABLE = On
+[2017-09-09 01:52:15,062|utils.py:161 - get_all_properties]    ENABLE = Off
+[2017-09-09 01:52:15,062|utils.py:153 - get_all_properties] CONFIG_PROCESS
+[2017-09-09 01:52:15,062|utils.py:161 - get_all_properties]    CONFIG_SAVE = Off
+[2017-09-09 01:52:15,062|utils.py:161 - get_all_properties]    CONFIG_LOAD = Off
+[2017-09-09 01:52:15,062|utils.py:161 - get_all_properties]    CONFIG_DEFAULT = Off
+[2017-09-09 01:52:15,062|utils.py:153 - get_all_properties] CONNECTION_MODE
+[2017-09-09 01:52:15,062|utils.py:161 - get_all_properties]    CONNECTION_SERIAL = On
+[2017-09-09 01:52:15,062|utils.py:161 - get_all_properties]    CONNECTION_TCP = Off
+[2017-09-09 01:52:15,063|utils.py:153 - get_all_properties] DEVICE_PORT
+[2017-09-09 01:52:15,063|utils.py:161 - get_all_properties]    PORT = /dev/ttyUSB2
+[2017-09-09 01:52:15,063|utils.py:153 - get_all_properties] DEVICE_BAUD_RATE
+[2017-09-09 01:52:15,063|utils.py:161 - get_all_properties]    9600 = On
+[2017-09-09 01:52:15,063|utils.py:161 - get_all_properties]    115200 = Off
+[2017-09-09 01:52:15,063|utils.py:161 - get_all_properties]    230400 = Off
+[2017-09-09 01:52:15,063|utils.py:161 - get_all_properties]    19200 = Off
+[2017-09-09 01:52:15,063|utils.py:161 - get_all_properties]    38400 = Off
+[2017-09-09 01:52:15,063|utils.py:161 - get_all_properties]    57600 = Off
+[2017-09-09 01:52:15,064|utils.py:153 - get_all_properties] DEVICE_AUTO_SEARCH
+[2017-09-09 01:52:15,064|utils.py:161 - get_all_properties]    DISABLED = Off
+[2017-09-09 01:52:15,064|utils.py:161 - get_all_properties]    ENABLED = On
+[2017-09-09 01:52:15,064|utils.py:153 - get_all_properties] DEVICE_PORT_SCAN
+[2017-09-09 01:52:15,064|utils.py:161 - get_all_properties]    Scan Ports = Off
+[2017-09-09 01:52:15,064|utils.py:153 - get_all_properties] SYSTEM_PORTS
+[2017-09-09 01:52:15,064|utils.py:161 - get_all_properties]    /dev/ttyUSB2 = Off
+[2017-09-09 01:52:15,064|utils.py:161 - get_all_properties]    /dev/ttyUSB3 = Off
+[2017-09-09 01:52:15,064|utils.py:161 - get_all_properties]    /dev/ttyUSB0 = Off
+[2017-09-09 01:52:15,065|utils.py:161 - get_all_properties]    /dev/ttyUSB1 = Off
+[2017-09-09 01:52:15,065|utils.py:153 - get_all_properties] ACTIVE_DEVICES
+[2017-09-09 01:52:15,065|utils.py:161 - get_all_properties]    ACTIVE_GPS = GPS Simulator
+[2017-09-09 01:52:15,065|utils.py:161 - get_all_properties]    ACTIVE_DOME = Dome Simulator
+[2017-09-09 01:52:15,065|utils.py:153 - get_all_properties] DOME_POLICY
+[2017-09-09 01:52:15,065|utils.py:161 - get_all_properties]    FORCE_CLOSE = Off
+[2017-09-09 01:52:15,065|utils.py:161 - get_all_properties]    LOCK_PARKING = Off
+[2017-09-09 01:52:15,065|utils.py:161 - get_all_properties]    LOCK_AND_FORCE = Off
+[2017-09-09 01:52:15,066|utils.py:161 - get_all_properties]    NO_ACTION = On
+[2017-09-09 01:52:15,066|utils.py:153 - get_all_properties] TELESCOPE_INFO
+[2017-09-09 01:52:15,066|utils.py:161 - get_all_properties]    GUIDER_FOCAL_LENGTH = 2640
+[2017-09-09 01:52:15,066|utils.py:161 - get_all_properties]    GUIDER_APERTURE = 320
+[2017-09-09 01:52:15,066|utils.py:161 - get_all_properties]    TELESCOPE_FOCAL_LENGTH = 2640
+[2017-09-09 01:52:15,066|utils.py:161 - get_all_properties]    TELESCOPE_APERTURE = 320
+[2017-09-09 01:52:15,066|utils.py:153 - get_all_properties] SCOPE_CONFIG_NAME
+[2017-09-09 01:52:15,066|utils.py:161 - get_all_properties]    SCOPE_CONFIG_NAME = CDK12.5
+[2017-09-09 01:52:15,066|utils.py:153 - get_all_properties] STARTUP_MODE
+[2017-09-09 01:52:15,067|utils.py:161 - get_all_properties]    WARM_START = On
+[2017-09-09 01:52:15,067|utils.py:161 - get_all_properties]    COLD_START = Off
+[2017-09-09 01:52:15,067|utils.py:161 - get_all_properties]    WARM_RESTART = Off
+[2017-09-09 01:52:15,067|utils.py:153 - get_all_properties] ON_COORD_SET
+[2017-09-09 01:52:15,067|utils.py:161 - get_all_properties]    TRACK = On
+[2017-09-09 01:52:15,067|utils.py:161 - get_all_properties]    SLEW = Off
+[2017-09-09 01:52:15,067|utils.py:161 - get_all_properties]    SYNC = Off
+[2017-09-09 01:52:15,067|utils.py:153 - get_all_properties] EQUATORIAL_EOD_COORD
+[2017-09-09 01:52:15,067|utils.py:161 - get_all_properties]    DEC = 90
+[2017-09-09 01:52:15,068|utils.py:161 - get_all_properties]    RA = 6.5022222222222225696
+[2017-09-09 01:52:15,068|utils.py:153 - get_all_properties] TELESCOPE_ABORT_MOTION
+[2017-09-09 01:52:15,068|utils.py:161 - get_all_properties]    ABORT = Off
+[2017-09-09 01:52:15,068|utils.py:153 - get_all_properties] TELESCOPE_TRACK_MODE
+[2017-09-09 01:52:15,068|utils.py:161 - get_all_properties]    TRACK_SOLAR = Off
+[2017-09-09 01:52:15,068|utils.py:161 - get_all_properties]    TRACK_LUNAR = Off
+[2017-09-09 01:52:15,068|utils.py:161 - get_all_properties]    TRACK_SIDEREAL = On
+[2017-09-09 01:52:15,068|utils.py:161 - get_all_properties]    TRACK_CUSTOM = Off
+[2017-09-09 01:52:15,069|utils.py:153 - get_all_properties] TELESCOPE_MOTION_NS
+[2017-09-09 01:52:15,069|utils.py:161 - get_all_properties]    MOTION_SOUTH = Off
+[2017-09-09 01:52:15,069|utils.py:161 - get_all_properties]    MOTION_NORTH = Off
+[2017-09-09 01:52:15,069|utils.py:153 - get_all_properties] TELESCOPE_MOTION_WE
+[2017-09-09 01:52:15,069|utils.py:161 - get_all_properties]    MOTION_WEST = Off
+[2017-09-09 01:52:15,069|utils.py:161 - get_all_properties]    MOTION_EAST = Off
+[2017-09-09 01:52:15,069|utils.py:153 - get_all_properties] TELESCOPE_SLEW_RATE
+[2017-09-09 01:52:15,069|utils.py:161 - get_all_properties]    SLEW_FIND = On
+[2017-09-09 01:52:15,069|utils.py:161 - get_all_properties]    SLEW_MAX = Off
+[2017-09-09 01:52:15,069|utils.py:161 - get_all_properties]    SLEW_GUIDE = Off
+[2017-09-09 01:52:15,070|utils.py:161 - get_all_properties]    SLEW_CENTERING = Off
+[2017-09-09 01:52:15,070|utils.py:153 - get_all_properties] TARGET_EOD_COORD
+[2017-09-09 01:52:15,070|utils.py:161 - get_all_properties]    DEC = 0
+[2017-09-09 01:52:15,070|utils.py:161 - get_all_properties]    RA = 0
+[2017-09-09 01:52:15,070|utils.py:153 - get_all_properties] TIME_UTC
+[2017-09-09 01:52:15,070|utils.py:161 - get_all_properties]    UTC = 
+[2017-09-09 01:52:15,070|utils.py:161 - get_all_properties]    OFFSET = 00
+[2017-09-09 01:52:15,070|utils.py:153 - get_all_properties] GEOGRAPHIC_COORD
+[2017-09-09 01:52:15,070|utils.py:161 - get_all_properties]    LAT = 42.183333333333330017
+[2017-09-09 01:52:15,070|utils.py:161 - get_all_properties]    ELEV = 0
+[2017-09-09 01:52:15,070|utils.py:161 - get_all_properties]    LONG = 0.73333333333333328152
+[2017-09-09 01:52:15,070|utils.py:153 - get_all_properties] TELESCOPE_PARK
+[2017-09-09 01:52:15,070|utils.py:161 - get_all_properties]    UNPARK = Off
+[2017-09-09 01:52:15,070|utils.py:161 - get_all_properties]    PARK = Off
+[2017-09-09 01:52:15,071|utils.py:153 - get_all_properties] TELESCOPE_PIER_SIDE
+[2017-09-09 01:52:15,071|utils.py:161 - get_all_properties]    PIER_WEST = On
+[2017-09-09 01:52:15,071|utils.py:161 - get_all_properties]    PIER_EAST = Off
+[2017-09-09 01:52:15,071|utils.py:153 - get_all_properties] APPLY_SCOPE_CONFIG
+[2017-09-09 01:52:15,071|utils.py:161 - get_all_properties]    SCOPE_CONFIG6 = Off
+[2017-09-09 01:52:15,071|utils.py:161 - get_all_properties]    SCOPE_CONFIG4 = Off
+[2017-09-09 01:52:15,071|utils.py:161 - get_all_properties]    SCOPE_CONFIG5 = Off
+[2017-09-09 01:52:15,071|utils.py:161 - get_all_properties]    SCOPE_CONFIG2 = Off
+[2017-09-09 01:52:15,071|utils.py:161 - get_all_properties]    SCOPE_CONFIG3 = Off
+[2017-09-09 01:52:15,071|utils.py:161 - get_all_properties]    SCOPE_CONFIG1 = On
+[2017-09-09 01:52:15,071|utils.py:153 - get_all_properties] USEJOYSTICK
+[2017-09-09 01:52:15,071|utils.py:161 - get_all_properties]    DISABLE = On
+[2017-09-09 01:52:15,071|utils.py:161 - get_all_properties]    ENABLE = Off
+[2017-09-09 01:52:15,072|utils.py:153 - get_all_properties] Sites
+[2017-09-09 01:52:15,072|utils.py:161 - get_all_properties]    Site 4 = Off
+[2017-09-09 01:52:15,072|utils.py:161 - get_all_properties]    Site 3 = Off
+[2017-09-09 01:52:15,072|utils.py:161 - get_all_properties]    Site 2 = Off
+[2017-09-09 01:52:15,072|utils.py:161 - get_all_properties]    Site 1 = On
+[2017-09-09 01:52:15,072|utils.py:153 - get_all_properties] Site Name
+[2017-09-09 01:52:15,072|utils.py:161 - get_all_properties]    Name = Ager
+[2017-09-09 01:52:15,072|utils.py:153 - get_all_properties] TELESCOPE_TIMED_GUIDE_NS
+[2017-09-09 01:52:15,072|utils.py:161 - get_all_properties]    TIMED_GUIDE_S = 0
+[2017-09-09 01:52:15,072|utils.py:161 - get_all_properties]    TIMED_GUIDE_N = 0
+[2017-09-09 01:52:15,072|utils.py:153 - get_all_properties] TELESCOPE_TIMED_GUIDE_WE
+[2017-09-09 01:52:15,072|utils.py:161 - get_all_properties]    TIMED_GUIDE_E = 0
+[2017-09-09 01:52:15,072|utils.py:161 - get_all_properties]    TIMED_GUIDE_W = 0
+[2017-09-09 01:52:15,073|utils.py:153 - get_all_properties] FOCUS_MOTION
+[2017-09-09 01:52:15,073|utils.py:161 - get_all_properties]    OUT = Off
+[2017-09-09 01:52:15,073|utils.py:161 - get_all_properties]    IN = Off
+[2017-09-09 01:52:15,073|utils.py:153 - get_all_properties] FOCUS_TIMER
+[2017-09-09 01:52:15,073|utils.py:161 - get_all_properties]    TIMER = 0
+[2017-09-09 01:52:15,073|utils.py:153 - get_all_properties] FOCUS_MODE
+[2017-09-09 01:52:15,073|utils.py:161 - get_all_properties]    FOCUS_SLOW = Off
+[2017-09-09 01:52:15,073|utils.py:161 - get_all_properties]    FOCUS_HALT = On
+[2017-09-09 01:52:15,073|utils.py:161 - get_all_properties]    FOCUS_FAST = Off
+[2017-09-09 01:52:15,073|utils.py:153 - get_all_properties] PARK_SETTINGS
+[2017-09-09 01:52:15,073|utils.py:161 - get_all_properties]    HOME = On
+[2017-09-09 01:52:15,073|utils.py:161 - get_all_properties]    STARTUP = Off
+[2017-09-09 01:52:15,073|utils.py:161 - get_all_properties]    ZENITH = Off
+[2017-09-09 01:52:15,074|utils.py:153 - get_all_properties] ACTIVE_DEVICES
+[2017-09-09 01:52:15,074|utils.py:161 - get_all_properties]    ACTIVE_GPS = GPS Simulator
+[2017-09-09 01:52:15,074|utils.py:161 - get_all_properties]    ACTIVE_DOME = Dome Simulator
+[2017-09-09 01:52:15,074|utils.py:153 - get_all_properties] DOME_POLICY
+[2017-09-09 01:52:15,074|utils.py:161 - get_all_properties]    FORCE_CLOSE = Off
+[2017-09-09 01:52:15,074|utils.py:161 - get_all_properties]    LOCK_PARKING = Off
+[2017-09-09 01:52:15,074|utils.py:161 - get_all_properties]    LOCK_AND_FORCE = Off
+[2017-09-09 01:52:15,074|utils.py:161 - get_all_properties]    NO_ACTION = On
+[2017-09-09 01:52:15,074|utils.py:153 - get_all_properties] TELESCOPE_INFO
+[2017-09-09 01:52:15,074|utils.py:161 - get_all_properties]    GUIDER_FOCAL_LENGTH = 2640
+[2017-09-09 01:52:15,074|utils.py:161 - get_all_properties]    GUIDER_APERTURE = 320
+[2017-09-09 01:52:15,074|utils.py:161 - get_all_properties]    TELESCOPE_FOCAL_LENGTH = 2640
+[2017-09-09 01:52:15,074|utils.py:161 - get_all_properties]    TELESCOPE_APERTURE = 320
+[2017-09-09 01:52:15,075|utils.py:153 - get_all_properties] SCOPE_CONFIG_NAME
+[2017-09-09 01:52:15,075|utils.py:161 - get_all_properties]    SCOPE_CONFIG_NAME = CDK12.5
+[2017-09-09 01:52:15,075|utils.py:153 - get_all_properties] ON_COORD_SET
+[2017-09-09 01:52:15,075|utils.py:161 - get_all_properties]    TRACK = On
+[2017-09-09 01:52:15,075|utils.py:161 - get_all_properties]    SLEW = Off
+[2017-09-09 01:52:15,075|utils.py:161 - get_all_properties]    SYNC = Off
+[2017-09-09 01:52:15,075|utils.py:153 - get_all_properties] EQUATORIAL_EOD_COORD
+[2017-09-09 01:52:15,075|utils.py:161 - get_all_properties]    DEC = 90
+[2017-09-09 01:52:15,075|utils.py:161 - get_all_properties]    RA = 6.5022222222222225696
+[2017-09-09 01:52:15,075|utils.py:153 - get_all_properties] TELESCOPE_ABORT_MOTION
+[2017-09-09 01:52:15,075|utils.py:161 - get_all_properties]    ABORT = Off
+[2017-09-09 01:52:15,075|utils.py:153 - get_all_properties] TELESCOPE_TRACK_MODE
+[2017-09-09 01:52:15,075|utils.py:161 - get_all_properties]    TRACK_SOLAR = Off
+[2017-09-09 01:52:15,076|utils.py:161 - get_all_properties]    TRACK_LUNAR = Off
+[2017-09-09 01:52:15,076|utils.py:161 - get_all_properties]    TRACK_SIDEREAL = On
+[2017-09-09 01:52:15,076|utils.py:161 - get_all_properties]    TRACK_CUSTOM = Off
+[2017-09-09 01:52:15,076|utils.py:153 - get_all_properties] TIME_UTC
+[2017-09-09 01:52:15,076|utils.py:161 - get_all_properties]    UTC = 
+[2017-09-09 01:52:15,076|utils.py:161 - get_all_properties]    OFFSET = 00
+[2017-09-09 01:52:15,076|utils.py:153 - get_all_properties] GEOGRAPHIC_COORD
+[2017-09-09 01:52:15,076|utils.py:161 - get_all_properties]    LAT = 42.183333333333330017
+[2017-09-09 01:52:15,076|utils.py:161 - get_all_properties]    ELEV = 0
+[2017-09-09 01:52:15,076|utils.py:161 - get_all_properties]    LONG = 0.73333333333333328152
+[2017-09-09 01:52:15,076|utils.py:153 - get_all_properties] TELESCOPE_PARK
+[2017-09-09 01:52:15,076|utils.py:161 - get_all_properties]    UNPARK = Off
+[2017-09-09 01:52:15,076|utils.py:161 - get_all_properties]    PARK = Off
+[2017-09-09 01:52:15,077|utils.py:153 - get_all_properties] TELESCOPE_MOTION_NS
+[2017-09-09 01:52:15,077|utils.py:161 - get_all_properties]    MOTION_SOUTH = Off
+[2017-09-09 01:52:15,077|utils.py:161 - get_all_properties]    MOTION_NORTH = Off
+[2017-09-09 01:52:15,077|utils.py:153 - get_all_properties] TELESCOPE_MOTION_WE
+[2017-09-09 01:52:15,077|utils.py:161 - get_all_properties]    MOTION_WEST = Off
+[2017-09-09 01:52:15,077|utils.py:161 - get_all_properties]    MOTION_EAST = Off
+[2017-09-09 01:52:15,077|utils.py:153 - get_all_properties] TELESCOPE_SLEW_RATE
+[2017-09-09 01:52:15,077|utils.py:161 - get_all_properties]    SLEW_FIND = On
+[2017-09-09 01:52:15,077|utils.py:161 - get_all_properties]    SLEW_MAX = Off
+[2017-09-09 01:52:15,077|utils.py:161 - get_all_properties]    SLEW_GUIDE = Off
+[2017-09-09 01:52:15,077|utils.py:161 - get_all_properties]    SLEW_CENTERING = Off
+[2017-09-09 01:52:15,077|utils.py:153 - get_all_properties] TARGET_EOD_COORD
+[2017-09-09 01:52:15,077|utils.py:161 - get_all_properties]    DEC = 0
+[2017-09-09 01:52:15,078|utils.py:161 - get_all_properties]    RA = 0
+[2017-09-09 01:52:15,078|utils.py:153 - get_all_properties] TELESCOPE_PIER_SIDE
+[2017-09-09 01:52:15,078|utils.py:161 - get_all_properties]    PIER_WEST = On
+[2017-09-09 01:52:15,078|utils.py:161 - get_all_properties]    PIER_EAST = Off
+[2017-09-09 01:52:15,078|utils.py:153 - get_all_properties] APPLY_SCOPE_CONFIG
+[2017-09-09 01:52:15,078|utils.py:161 - get_all_properties]    SCOPE_CONFIG6 = Off
+[2017-09-09 01:52:15,078|utils.py:161 - get_all_properties]    SCOPE_CONFIG4 = Off
+[2017-09-09 01:52:15,078|utils.py:161 - get_all_properties]    SCOPE_CONFIG5 = Off
+[2017-09-09 01:52:15,078|utils.py:161 - get_all_properties]    SCOPE_CONFIG2 = Off
+[2017-09-09 01:52:15,078|utils.py:161 - get_all_properties]    SCOPE_CONFIG3 = Off
+[2017-09-09 01:52:15,078|utils.py:161 - get_all_properties]    SCOPE_CONFIG1 = On
+[2017-09-09 01:52:15,078|utils.py:153 - get_all_properties] USEJOYSTICK
+[2017-09-09 01:52:15,078|utils.py:161 - get_all_properties]    DISABLE = On
+[2017-09-09 01:52:15,079|utils.py:161 - get_all_properties]    ENABLE = Off
+[2017-09-09 01:52:15,079|utils.py:153 - get_all_properties] Sites
+[2017-09-09 01:52:15,079|utils.py:161 - get_all_properties]    Site 4 = Off
+[2017-09-09 01:52:15,079|utils.py:161 - get_all_properties]    Site 3 = Off
+[2017-09-09 01:52:15,079|utils.py:161 - get_all_properties]    Site 2 = Off
+[2017-09-09 01:52:15,079|utils.py:161 - get_all_properties]    Site 1 = On
+[2017-09-09 01:52:15,079|utils.py:153 - get_all_properties] Site Name
+[2017-09-09 01:52:15,079|utils.py:161 - get_all_properties]    Name = Ager
+[2017-09-09 01:52:15,079|utils.py:153 - get_all_properties] TELESCOPE_TIMED_GUIDE_NS
+[2017-09-09 01:52:15,079|utils.py:161 - get_all_properties]    TIMED_GUIDE_S = 0
+[2017-09-09 01:52:15,079|utils.py:161 - get_all_properties]    TIMED_GUIDE_N = 0
+[2017-09-09 01:52:15,079|utils.py:153 - get_all_properties] TELESCOPE_TIMED_GUIDE_WE
+[2017-09-09 01:52:15,079|utils.py:161 - get_all_properties]    TIMED_GUIDE_E = 0
+[2017-09-09 01:52:15,080|utils.py:161 - get_all_properties]    TIMED_GUIDE_W = 0
+[2017-09-09 01:52:15,080|utils.py:153 - get_all_properties] FOCUS_MOTION
+[2017-09-09 01:52:15,080|utils.py:161 - get_all_properties]    OUT = Off
+[2017-09-09 01:52:15,080|utils.py:161 - get_all_properties]    IN = Off
+[2017-09-09 01:52:15,080|utils.py:153 - get_all_properties] FOCUS_TIMER
+[2017-09-09 01:52:15,080|utils.py:161 - get_all_properties]    TIMER = 0
+[2017-09-09 01:52:15,080|utils.py:153 - get_all_properties] FOCUS_MODE
+[2017-09-09 01:52:15,080|utils.py:161 - get_all_properties]    FOCUS_SLOW = Off
+[2017-09-09 01:52:15,080|utils.py:161 - get_all_properties]    FOCUS_HALT = On
+[2017-09-09 01:52:15,080|utils.py:161 - get_all_properties]    FOCUS_FAST = Off
+[2017-09-09 01:52:15,080|utils.py:153 - get_all_properties] STARTUP_MODE
+[2017-09-09 01:52:15,080|utils.py:161 - get_all_properties]    WARM_START = On
+[2017-09-09 01:52:15,080|utils.py:161 - get_all_properties]    COLD_START = Off
+[2017-09-09 01:52:15,081|utils.py:161 - get_all_properties]    WARM_RESTART = Off
+[2017-09-09 01:52:15,081|utils.py:164 - get_all_properties]     Total Losmandy Gemini properties = 38.
+[2017-09-09 01:52:15,081|utils.py:138 - get_all_properties] Getting all FLI CCD properties.
+[2017-09-09 01:52:15,081|utils.py:76 - run] Running: indi_getprop -h 127.0.0.1 -p 7624 -t 2 FLI CCD.*.*
+[2017-09-09 01:52:17,093|utils.py:153 - get_all_properties] CONNECTION
+[2017-09-09 01:52:17,093|utils.py:161 - get_all_properties]    DISCONNECT = Off
+[2017-09-09 01:52:17,093|utils.py:161 - get_all_properties]    CONNECT = On
+[2017-09-09 01:52:17,093|utils.py:153 - get_all_properties] DRIVER_INFO
+[2017-09-09 01:52:17,093|utils.py:161 - get_all_properties]    DRIVER_EXEC = indi_fli_ccd
+[2017-09-09 01:52:17,093|utils.py:161 - get_all_properties]    DRIVER_NAME = FLI CCD
+[2017-09-09 01:52:17,094|utils.py:161 - get_all_properties]    DRIVER_INTERFACE = 2
+[2017-09-09 01:52:17,094|utils.py:161 - get_all_properties]    DRIVER_VERSION = 1.1
+[2017-09-09 01:52:17,094|utils.py:153 - get_all_properties] SIMULATION
+[2017-09-09 01:52:17,094|utils.py:161 - get_all_properties]    DISABLE = On
+[2017-09-09 01:52:17,094|utils.py:161 - get_all_properties]    ENABLE = Off
+[2017-09-09 01:52:17,094|utils.py:153 - get_all_properties] DEBUG
+[2017-09-09 01:52:17,094|utils.py:161 - get_all_properties]    DISABLE = On
+[2017-09-09 01:52:17,094|utils.py:161 - get_all_properties]    ENABLE = Off
+[2017-09-09 01:52:17,094|utils.py:153 - get_all_properties] CONFIG_PROCESS
+[2017-09-09 01:52:17,095|utils.py:161 - get_all_properties]    CONFIG_SAVE = Off
+[2017-09-09 01:52:17,095|utils.py:161 - get_all_properties]    CONFIG_LOAD = Off
+[2017-09-09 01:52:17,095|utils.py:161 - get_all_properties]    CONFIG_DEFAULT = Off
+[2017-09-09 01:52:17,095|utils.py:153 - get_all_properties] ACTIVE_DEVICES
+[2017-09-09 01:52:17,095|utils.py:161 - get_all_properties]    ACTIVE_FOCUSER = Focuser Simulator
+[2017-09-09 01:52:17,095|utils.py:161 - get_all_properties]    ACTIVE_SKYQUALITY = SQM
+[2017-09-09 01:52:17,095|utils.py:161 - get_all_properties]    ACTIVE_FILTER = CCD Simulator
+[2017-09-09 01:52:17,095|utils.py:161 - get_all_properties]    ACTIVE_TELESCOPE = Telescope Simulator
+[2017-09-09 01:52:17,096|utils.py:153 - get_all_properties] CCD_EXPOSURE
+[2017-09-09 01:52:17,096|utils.py:161 - get_all_properties]    CCD_EXPOSURE_VALUE = 1
+[2017-09-09 01:52:17,096|utils.py:153 - get_all_properties] CCD_ABORT_EXPOSURE
+[2017-09-09 01:52:17,096|utils.py:161 - get_all_properties]    ABORT = Off
+[2017-09-09 01:52:17,096|utils.py:153 - get_all_properties] CCD_FRAME
+[2017-09-09 01:52:17,096|utils.py:161 - get_all_properties]    Y = 0
+[2017-09-09 01:52:17,096|utils.py:161 - get_all_properties]    X = 0
+[2017-09-09 01:52:17,096|utils.py:161 - get_all_properties]    HEIGHT = 2048
+[2017-09-09 01:52:17,096|utils.py:161 - get_all_properties]    WIDTH = 3072
+[2017-09-09 01:52:17,097|utils.py:153 - get_all_properties] CCD_BINNING
+[2017-09-09 01:52:17,097|utils.py:161 - get_all_properties]    VER_BIN = 1
+[2017-09-09 01:52:17,097|utils.py:161 - get_all_properties]    HOR_BIN = 1
+[2017-09-09 01:52:17,097|utils.py:153 - get_all_properties] FITS_HEADER
+[2017-09-09 01:52:17,097|utils.py:161 - get_all_properties]    FITS_OBJECT = Unknown
+[2017-09-09 01:52:17,097|utils.py:161 - get_all_properties]    FITS_OBSERVER = Unknown
+[2017-09-09 01:52:17,097|utils.py:153 - get_all_properties] CCD_TEMPERATURE
+[2017-09-09 01:52:17,097|utils.py:161 - get_all_properties]    CCD_TEMPERATURE_VALUE = -30
+[2017-09-09 01:52:17,097|utils.py:153 - get_all_properties] CCD_INFO
+[2017-09-09 01:52:17,098|utils.py:161 - get_all_properties]    CCD_BITSPERPIXEL = 16
+[2017-09-09 01:52:17,098|utils.py:161 - get_all_properties]    CCD_MAX_Y = 2048
+[2017-09-09 01:52:17,098|utils.py:161 - get_all_properties]    CCD_PIXEL_SIZE = 9
+[2017-09-09 01:52:17,098|utils.py:161 - get_all_properties]    CCD_PIXEL_SIZE_X = 9
+[2017-09-09 01:52:17,098|utils.py:161 - get_all_properties]    CCD_MAX_X = 3072
+[2017-09-09 01:52:17,098|utils.py:161 - get_all_properties]    CCD_PIXEL_SIZE_Y = 9
+[2017-09-09 01:52:17,098|utils.py:153 - get_all_properties] CCD_COMPRESSION
+[2017-09-09 01:52:17,098|utils.py:161 - get_all_properties]    CCD_COMPRESS = Off
+[2017-09-09 01:52:17,098|utils.py:161 - get_all_properties]    CCD_RAW = On
+[2017-09-09 01:52:17,098|utils.py:153 - get_all_properties] CCD_FRAME_TYPE
+[2017-09-09 01:52:17,098|utils.py:161 - get_all_properties]    FRAME_FLAT = Off
+[2017-09-09 01:52:17,098|utils.py:161 - get_all_properties]    FRAME_BIAS = Off
+[2017-09-09 01:52:17,098|utils.py:161 - get_all_properties]    FRAME_DARK = Off
+[2017-09-09 01:52:17,099|utils.py:161 - get_all_properties]    FRAME_LIGHT = On
+[2017-09-09 01:52:17,099|utils.py:153 - get_all_properties] CCD_RAPID_GUIDE
+[2017-09-09 01:52:17,099|utils.py:161 - get_all_properties]    DISABLE = On
+[2017-09-09 01:52:17,099|utils.py:161 - get_all_properties]    ENABLE = Off
+[2017-09-09 01:52:17,099|utils.py:153 - get_all_properties] TELESCOPE_TYPE
+[2017-09-09 01:52:17,099|utils.py:161 - get_all_properties]    TELESCOPE_GUIDE = Off
+[2017-09-09 01:52:17,099|utils.py:161 - get_all_properties]    TELESCOPE_PRIMARY = On
+[2017-09-09 01:52:17,099|utils.py:153 - get_all_properties] WCS_CONTROL
+[2017-09-09 01:52:17,099|utils.py:161 - get_all_properties]    WCS_ENABLE = Off
+[2017-09-09 01:52:17,099|utils.py:161 - get_all_properties]    WCS_DISABLE = On
+[2017-09-09 01:52:17,099|utils.py:153 - get_all_properties] UPLOAD_MODE
+[2017-09-09 01:52:17,099|utils.py:161 - get_all_properties]    UPLOAD_BOTH = On
+[2017-09-09 01:52:17,099|utils.py:161 - get_all_properties]    UPLOAD_CLIENT = Off
+[2017-09-09 01:52:17,099|utils.py:161 - get_all_properties]    UPLOAD_LOCAL = Off
+[2017-09-09 01:52:17,100|utils.py:153 - get_all_properties] UPLOAD_SETTINGS
+[2017-09-09 01:52:17,100|utils.py:161 - get_all_properties]    UPLOAD_DIR = /home/pere
+[2017-09-09 01:52:17,100|utils.py:161 - get_all_properties]    UPLOAD_PREFIX = IMAGE_XXX
+[2017-09-09 01:52:17,100|utils.py:153 - get_all_properties] Model
+[2017-09-09 01:52:17,100|utils.py:161 - get_all_properties]    FW Rev = 273
+[2017-09-09 01:52:17,100|utils.py:161 - get_all_properties]    Model = ProLine PL6303
+[2017-09-09 01:52:17,100|utils.py:161 - get_all_properties]    HW Rev = 256
+[2017-09-09 01:52:17,100|utils.py:153 - get_all_properties] CCD_COOLER_POWER
+[2017-09-09 01:52:17,100|utils.py:161 - get_all_properties]    CCD_COOLER_VALUE = 66
+[2017-09-09 01:52:17,100|utils.py:153 - get_all_properties] CCD_FILE_PATH
+[2017-09-09 01:52:17,100|utils.py:161 - get_all_properties]    FILE_PATH = 
+[2017-09-09 01:52:17,100|utils.py:153 - get_all_properties] ACTIVE_DEVICES
+[2017-09-09 01:52:17,101|utils.py:161 - get_all_properties]    ACTIVE_FOCUSER = Focuser Simulator
+[2017-09-09 01:52:17,101|utils.py:161 - get_all_properties]    ACTIVE_SKYQUALITY = SQM
+[2017-09-09 01:52:17,101|utils.py:161 - get_all_properties]    ACTIVE_FILTER = CCD Simulator
+[2017-09-09 01:52:17,101|utils.py:161 - get_all_properties]    ACTIVE_TELESCOPE = Telescope Simulator
+[2017-09-09 01:52:17,101|utils.py:164 - get_all_properties]     Total FLI CCD properties = 23.
+[2017-09-09 01:52:17,101|telescope.py:116 - park] Setting PARK state to Off.
+[2017-09-09 01:52:17,101|utils.py:76 - run] Running: indi_setprop -t 30 -h 127.0.0.1 -p 7624 Losmandy Gemini.TELESCOPE_PARK.PARK=Off;UNPARK=On
+[2017-09-09 01:52:19,125|telescope.py:130 - park]     Done. Losmandy Gemini  PARK = 'Off'.
+[2017-09-09 01:52:19,125|camera.py:220 - getf] Getting present filter.
+[2017-09-09 01:52:19,125|utils.py:93 - get2] Getting "FLI CFW.FILTER_SLOT.FILTER_SLOT_VALUE" properties
+[2017-09-09 01:52:19,125|utils.py:76 - run] Running: indi_getprop -h 127.0.0.1 -p 7624 FLI CFW.FILTER_SLOT.FILTER_SLOT_VALUE
+[2017-09-09 01:52:19,136|camera.py:226 - getf] Filter 1: 'L' in place.
+[2017-09-09 01:52:19,137|seq_script.py:293 - parsing_exec_line] Parsing line: 1,20170909,01:52:06,observe,p1t1i1
+[2017-09-09 01:52:19,138|seq_script.py:299 - parsing_exec_line] Parsed  line: execline(num='1', edate='20170909', etime='01:52:06', function='observe', pti='p1t1i1')
+[2017-09-09 01:52:19,138|seq_script.py:355 - main] Executing line #1:  observe p1t1i1
+[2017-09-09 01:52:19,138|seq_script.py:306 - exec_wait] Executing wait for 2017090901:52:06
+[2017-09-09 01:52:19,140|seq_script.py:312 - exec_wait]     Line in time, -13s delayed
+[2017-09-09 01:52:19,140|seq_script.py:257 - observe] Executing observe=p1t1i1
+[2017-09-09 01:52:19,140|seq_script.py:246 - track] Executing track=p1t1
+[2017-09-09 01:52:19,141|seq_script.py:279 - coord2EOD] Parsing EOD coords. targ=target(ID='p1t1', obj_name='Gam01_And', coord_name='Equatorial', coord_acr='e', coord_value='02:03:54.022 +42:19:46.11', equinox='J2000.0')
+[2017-09-09 01:52:19,249|seq_script.py:287 - coord2EOD] Returned coords.RA:2.08320948202 DEC:42.4137794537
+[2017-09-09 01:52:19,251|seq_script.py:251 - track] Looking for cooordinates: (2.0832094820243343, 42.41377945374635)
+[2017-09-09 01:52:19,251|telescope.py:79 - target_coord] Slewing to  new target RA/DEC coordinates.
+[2017-09-09 01:52:19,251|telescope.py:80 - target_coord]     RA -> 2.08320948202
+[2017-09-09 01:52:19,251|telescope.py:81 - target_coord]     DEC-> 42.4137794537
+[2017-09-09 01:52:19,251|utils.py:76 - run] Running: indi_setprop -t 30 -h 127.0.0.1 -p 7624 Losmandy Gemini.EQUATORIAL_EOD_COORD.RA=2.08320948202;DEC=42.4137794537
+[2017-09-09 01:52:21,308|utils.py:118 - eval2] Evaluation: ['-wo', '-t', '30', '"Losmandy Gemini.EQUATORIAL_EOD_COORD._STATE"==1']
+[2017-09-09 01:52:21,308|utils.py:76 - run] Running: indi_eval -h 127.0.0.1 -p 7624 -wo -t 30 "Losmandy Gemini.EQUATORIAL_EOD_COORD._STATE"==1
+[2017-09-09 01:53:11,253|telescope.py:92 - target_coord]     Done. Losmandy Gemini at target position.
+[2017-09-09 01:53:11,254|camera.py:133 - upload_object] Setting fits header OBJECT=Gam01_And.
+[2017-09-09 01:53:11,254|utils.py:103 - set2] Setting: FLI CCD.FITS_HEADER.FITS_OBJECT=Gam01_And
+[2017-09-09 01:53:11,254|utils.py:76 - run] Running: indi_setprop -t 30 -h 127.0.0.1 -p 7624 FLI CCD.FITS_HEADER.FITS_OBJECT=Gam01_And
+[2017-09-09 01:53:11,276|camera.py:137 - upload_object]     Done. Fits header OBJECT=Gam01_And
+[2017-09-09 01:53:11,277|camera.py:109 - upload_path] Setting /home/pere/fits/rawdata/Gam01_And/ files path
+[2017-09-09 01:53:11,277|utils.py:103 - set2] Setting: FLI CCD.UPLOAD_SETTINGS.UPLOAD_DIR=/home/pere/fits/rawdata/Gam01_And/
+[2017-09-09 01:53:11,277|utils.py:76 - run] Running: indi_setprop -t 30 -h 127.0.0.1 -p 7624 FLI CCD.UPLOAD_SETTINGS.UPLOAD_DIR=/home/pere/fits/rawdata/Gam01_And/
+[2017-09-09 01:53:11,449|camera.py:113 - upload_path]     Done. Files path = /home/pere/fits/rawdata/Gam01_And/ 
+[2017-09-09 01:53:11,449|camera.py:123 - upload_prefix] Setting _Gam01_And_imr_XXX files prefix
+[2017-09-09 01:53:11,449|utils.py:103 - set2] Setting: FLI CCD.UPLOAD_SETTINGS.UPLOAD_PREFIX=_Gam01_And_imr_XXX
+[2017-09-09 01:53:11,450|utils.py:76 - run] Running: indi_setprop -t 30 -h 127.0.0.1 -p 7624 FLI CCD.UPLOAD_SETTINGS.UPLOAD_PREFIX=_Gam01_And_imr_XXX
+[2017-09-09 01:53:11,471|camera.py:126 - upload_prefix]     Done. Files prefix = _Gam01_And_imr_XXX 
+[2017-09-09 01:53:11,472|camera.py:204 - setf] Setting B filter.
+[2017-09-09 01:53:11,472|utils.py:103 - set2] Setting: FLI CFW.FILTER_SLOT.FILTER_SLOT_VALUE=4
+[2017-09-09 01:53:11,472|utils.py:76 - run] Running: indi_setprop -t 30 -h 127.0.0.1 -p 7624 FLI CFW.FILTER_SLOT.FILTER_SLOT_VALUE=4
+[2017-09-09 01:53:13,661|utils.py:118 - eval2] Evaluation: ['-wo', '-t', '30', '"FLI CFW.FILTER_SLOT.FILTER_SLOT_VALUE"==4']
+[2017-09-09 01:53:13,661|utils.py:76 - run] Running: indi_eval -h 127.0.0.1 -p 7624 -wo -t 30 "FLI CFW.FILTER_SLOT.FILTER_SLOT_VALUE"==4
+[2017-09-09 01:53:13,671|camera.py:214 - setf]     Done. Filter 4: 'B' in place.
+[2017-09-09 01:53:13,671|camera.py:75 - expose] Starting 15.0s. exposure (1/2).
+[2017-09-09 01:53:13,671|utils.py:93 - get2] Getting "FLI CCD.UPLOAD_SETTINGS.UPLOAD_DIR" properties
+[2017-09-09 01:53:13,672|utils.py:76 - run] Running: indi_getprop -h 127.0.0.1 -p 7624 FLI CCD.UPLOAD_SETTINGS.UPLOAD_DIR
+[2017-09-09 01:53:13,681|camera.py:84 - expose] Running: indi_setprop -t 30 -h 127.0.0.1 -p 7624 -t 17.0 FLI CCD.CCD_EXPOSURE.CCD_EXPOSURE_VALUE=15.0
+[2017-09-09 01:53:13,696|camera.py:87 - expose] Running: indi_getprop -h 127.0.0.1 -p 7624 -t 35.0 FLI CCD.CCD1.CCD1
+[2017-09-09 01:53:32,201|camera.py:90 - expose]     Exposure finished.
+[2017-09-09 01:53:32,202|utils.py:127 - lastest_file] Looking for latest file at /home/pere/fits/rawdata/Gam01_And/
+[2017-09-09 01:53:32,202|camera.py:91 - expose]     File [36m/home/pere/fits/rawdata/Gam01_And/_Gam01_And_imr_005.fits[0m succesfully created.
+[2017-09-09 01:53:32,203|camera.py:75 - expose] Starting 15.0s. exposure (2/2).
+[2017-09-09 01:53:32,203|utils.py:93 - get2] Getting "FLI CCD.UPLOAD_SETTINGS.UPLOAD_DIR" properties
+[2017-09-09 01:53:32,203|utils.py:76 - run] Running: indi_getprop -h 127.0.0.1 -p 7624 FLI CCD.UPLOAD_SETTINGS.UPLOAD_DIR
+[2017-09-09 01:53:32,216|camera.py:84 - expose] Running: indi_setprop -t 30 -h 127.0.0.1 -p 7624 -t 17.0 FLI CCD.CCD_EXPOSURE.CCD_EXPOSURE_VALUE=15.0
+[2017-09-09 01:53:32,236|camera.py:87 - expose] Running: indi_getprop -h 127.0.0.1 -p 7624 -t 35.0 FLI CCD.CCD1.CCD1
+[2017-09-09 01:53:50,534|camera.py:90 - expose]     Exposure finished.
+[2017-09-09 01:53:50,534|utils.py:127 - lastest_file] Looking for latest file at /home/pere/fits/rawdata/Gam01_And/
+[2017-09-09 01:53:50,535|camera.py:91 - expose]     File [36m/home/pere/fits/rawdata/Gam01_And/_Gam01_And_imr_006.fits[0m succesfully created.
+[2017-09-09 01:53:50,535|seq_script.py:293 - parsing_exec_line] Parsing line: 2,20170909,01:53:00,observe,p2t2i2
+[2017-09-09 01:53:50,536|seq_script.py:299 - parsing_exec_line] Parsed  line: execline(num='2', edate='20170909', etime='01:53:00', function='observe', pti='p2t2i2')
+[2017-09-09 01:53:50,536|seq_script.py:355 - main] Executing line #2:  observe p2t2i2
+[2017-09-09 01:53:50,536|seq_script.py:306 - exec_wait] Executing wait for 2017090901:53:00
+[2017-09-09 01:53:50,537|seq_script.py:312 - exec_wait]     Line in time, -50s delayed
+[2017-09-09 01:53:50,537|seq_script.py:257 - observe] Executing observe=p2t2i2
+[2017-09-09 01:53:50,537|seq_script.py:246 - track] Executing track=p2t2
+[2017-09-09 01:53:50,537|seq_script.py:279 - coord2EOD] Parsing EOD coords. targ=target(ID='p2t2', obj_name='M31', coord_name='Equatorial', coord_acr='e', coord_value='00:42:42.000 +41:16:00.00', equinox='J2000.0')
+[2017-09-09 01:53:50,579|seq_script.py:287 - coord2EOD] Returned coords.RA:0.727856670796 DEC:41.3633942748
+[2017-09-09 01:53:50,580|seq_script.py:251 - track] Looking for cooordinates: (0.727856670795774, 41.36339427479632)
+[2017-09-09 01:53:50,580|telescope.py:79 - target_coord] Slewing to  new target RA/DEC coordinates.
+[2017-09-09 01:53:50,580|telescope.py:80 - target_coord]     RA -> 0.727856670796
+[2017-09-09 01:53:50,581|telescope.py:81 - target_coord]     DEC-> 41.3633942748
+[2017-09-09 01:53:50,581|utils.py:76 - run] Running: indi_setprop -t 30 -h 127.0.0.1 -p 7624 Losmandy Gemini.EQUATORIAL_EOD_COORD.RA=0.727856670796;DEC=41.3633942748
+[2017-09-09 01:53:52,633|utils.py:118 - eval2] Evaluation: ['-wo', '-t', '30', '"Losmandy Gemini.EQUATORIAL_EOD_COORD._STATE"==1']
+[2017-09-09 01:53:52,634|utils.py:76 - run] Running: indi_eval -h 127.0.0.1 -p 7624 -wo -t 30 "Losmandy Gemini.EQUATORIAL_EOD_COORD._STATE"==1
+[2017-09-09 01:54:08,765|telescope.py:92 - target_coord]     Done. Losmandy Gemini at target position.
+[2017-09-09 01:54:08,766|camera.py:133 - upload_object] Setting fits header OBJECT=M31.
+[2017-09-09 01:54:08,766|utils.py:103 - set2] Setting: FLI CCD.FITS_HEADER.FITS_OBJECT=M31
+[2017-09-09 01:54:08,766|utils.py:76 - run] Running: indi_setprop -t 30 -h 127.0.0.1 -p 7624 FLI CCD.FITS_HEADER.FITS_OBJECT=M31
+[2017-09-09 01:54:08,784|camera.py:137 - upload_object]     Done. Fits header OBJECT=M31
+[2017-09-09 01:54:08,785|camera.py:109 - upload_path] Setting /home/pere/fits/rawdata/M31/ files path
+[2017-09-09 01:54:08,785|utils.py:103 - set2] Setting: FLI CCD.UPLOAD_SETTINGS.UPLOAD_DIR=/home/pere/fits/rawdata/M31/
+[2017-09-09 01:54:08,785|utils.py:76 - run] Running: indi_setprop -t 30 -h 127.0.0.1 -p 7624 FLI CCD.UPLOAD_SETTINGS.UPLOAD_DIR=/home/pere/fits/rawdata/M31/
+[2017-09-09 01:54:08,868|camera.py:113 - upload_path]     Done. Files path = /home/pere/fits/rawdata/M31/ 
+[2017-09-09 01:54:08,869|camera.py:123 - upload_prefix] Setting _M31_imr_XXX files prefix
+[2017-09-09 01:54:08,869|utils.py:103 - set2] Setting: FLI CCD.UPLOAD_SETTINGS.UPLOAD_PREFIX=_M31_imr_XXX
+[2017-09-09 01:54:08,869|utils.py:76 - run] Running: indi_setprop -t 30 -h 127.0.0.1 -p 7624 FLI CCD.UPLOAD_SETTINGS.UPLOAD_PREFIX=_M31_imr_XXX
+[2017-09-09 01:54:08,893|camera.py:126 - upload_prefix]     Done. Files prefix = _M31_imr_XXX 
+[2017-09-09 01:54:08,893|camera.py:204 - setf] Setting R filter.
+[2017-09-09 01:54:08,893|utils.py:103 - set2] Setting: FLI CFW.FILTER_SLOT.FILTER_SLOT_VALUE=2
+[2017-09-09 01:54:08,893|utils.py:76 - run] Running: indi_setprop -t 30 -h 127.0.0.1 -p 7624 FLI CFW.FILTER_SLOT.FILTER_SLOT_VALUE=2
+[2017-09-09 01:54:10,906|utils.py:118 - eval2] Evaluation: ['-wo', '-t', '30', '"FLI CFW.FILTER_SLOT.FILTER_SLOT_VALUE"==2']
+[2017-09-09 01:54:10,906|utils.py:76 - run] Running: indi_eval -h 127.0.0.1 -p 7624 -wo -t 30 "FLI CFW.FILTER_SLOT.FILTER_SLOT_VALUE"==2
+[2017-09-09 01:54:11,613|camera.py:214 - setf]     Done. Filter 2: 'R' in place.
+[2017-09-09 01:54:11,613|camera.py:75 - expose] Starting 30.0s. exposure (1/2).
+[2017-09-09 01:54:11,613|utils.py:93 - get2] Getting "FLI CCD.UPLOAD_SETTINGS.UPLOAD_DIR" properties
+[2017-09-09 01:54:11,613|utils.py:76 - run] Running: indi_getprop -h 127.0.0.1 -p 7624 FLI CCD.UPLOAD_SETTINGS.UPLOAD_DIR
+[2017-09-09 01:54:11,626|camera.py:84 - expose] Running: indi_setprop -t 30 -h 127.0.0.1 -p 7624 -t 32.0 FLI CCD.CCD_EXPOSURE.CCD_EXPOSURE_VALUE=30.0
+[2017-09-09 01:54:11,641|camera.py:87 - expose] Running: indi_getprop -h 127.0.0.1 -p 7624 -t 50.0 FLI CCD.CCD1.CCD1
+[2017-09-09 01:54:45,180|camera.py:90 - expose]     Exposure finished.
+[2017-09-09 01:54:45,180|utils.py:127 - lastest_file] Looking for latest file at /home/pere/fits/rawdata/M31/
+[2017-09-09 01:54:45,181|camera.py:91 - expose]     File [36m/home/pere/fits/rawdata/M31/_M31_imr_003.fits[0m succesfully created.
+[2017-09-09 01:54:45,181|camera.py:75 - expose] Starting 30.0s. exposure (2/2).
+[2017-09-09 01:54:45,181|utils.py:93 - get2] Getting "FLI CCD.UPLOAD_SETTINGS.UPLOAD_DIR" properties
+[2017-09-09 01:54:45,181|utils.py:76 - run] Running: indi_getprop -h 127.0.0.1 -p 7624 FLI CCD.UPLOAD_SETTINGS.UPLOAD_DIR
+[2017-09-09 01:54:45,193|camera.py:84 - expose] Running: indi_setprop -t 30 -h 127.0.0.1 -p 7624 -t 32.0 FLI CCD.CCD_EXPOSURE.CCD_EXPOSURE_VALUE=30.0
+[2017-09-09 01:54:45,206|camera.py:87 - expose] Running: indi_getprop -h 127.0.0.1 -p 7624 -t 50.0 FLI CCD.CCD1.CCD1
+[2017-09-09 01:55:18,657|camera.py:90 - expose]     Exposure finished.
+[2017-09-09 01:55:18,657|utils.py:127 - lastest_file] Looking for latest file at /home/pere/fits/rawdata/M31/
+[2017-09-09 01:55:18,658|camera.py:91 - expose]     File [36m/home/pere/fits/rawdata/M31/_M31_imr_004.fits[0m succesfully created.
+[2017-09-09 01:55:18,658|telescope.py:116 - park] Setting PARK state to On.
+[2017-09-09 01:55:18,658|utils.py:76 - run] Running: indi_setprop -t 30 -h 127.0.0.1 -p 7624 Losmandy Gemini.TELESCOPE_PARK.PARK=On;UNPARK=Off
+[2017-09-09 01:55:20,681|utils.py:118 - eval2] Evaluation: ['-wo', '-t', '30', '"Losmandy Gemini.EQUATORIAL_EOD_COORD._STATE"==0']
+[2017-09-09 01:55:20,681|utils.py:76 - run] Running: indi_eval -h 127.0.0.1 -p 7624 -wo -t 30 "Losmandy Gemini.EQUATORIAL_EOD_COORD._STATE"==0
+[2017-09-09 01:56:27,859|telescope.py:130 - park]     Done. Losmandy Gemini  PARK = 'On'.
+[2017-09-09 01:56:27,859|telescope.py:64 - disconnect] Disconnecting Losmandy Gemini from indiserver.
+[2017-09-09 01:56:27,859|utils.py:93 - get2] Getting "Losmandy Gemini.CONNECTION.CONNECT._STATE" properties
+[2017-09-09 01:56:27,859|utils.py:76 - run] Running: indi_getprop -h 127.0.0.1 -p 7624 Losmandy Gemini.CONNECTION.CONNECT._STATE
+[2017-09-09 01:56:27,869|utils.py:103 - set2] Setting: Losmandy Gemini.CONNECTION.CONNECT=Off;DISCONNECT=On
+[2017-09-09 01:56:27,870|utils.py:76 - run] Running: indi_setprop -t 30 -h 127.0.0.1 -p 7624 Losmandy Gemini.CONNECTION.CONNECT=Off;DISCONNECT=On
+[2017-09-09 01:56:27,889|utils.py:118 - eval2] Evaluation: ['-wo', '-t', '30', '"Losmandy Gemini.CONNECTION._STATE"==0']
+[2017-09-09 01:56:27,889|utils.py:76 - run] Running: indi_eval -h 127.0.0.1 -p 7624 -wo -t 30 "Losmandy Gemini.CONNECTION._STATE"==0
+[2017-09-09 01:56:28,154|telescope.py:73 - disconnect] [91m*** Losmandy Gemini Disconnected! ***[0m
+[2017-09-09 01:56:29,156|camera.py:60 - disconnect] Disconnecting FLI CCD from indiserver.
+[2017-09-09 01:56:29,156|utils.py:93 - get2] Getting "FLI CCD.CONNECTION.CONNECT._STATE" properties
+[2017-09-09 01:56:29,157|utils.py:76 - run] Running: indi_getprop -h 127.0.0.1 -p 7624 FLI CCD.CONNECTION.CONNECT._STATE
+[2017-09-09 01:56:29,165|utils.py:103 - set2] Setting: FLI CCD.CONNECTION.CONNECT=Off;DISCONNECT=On
+[2017-09-09 01:56:29,165|utils.py:76 - run] Running: indi_setprop -t 30 -h 127.0.0.1 -p 7624 FLI CCD.CONNECTION.CONNECT=Off;DISCONNECT=On
+[2017-09-09 01:56:29,177|utils.py:118 - eval2] Evaluation: ['-wo', '-t', '30', '"FLI CCD.CONNECTION._STATE"==0']
+[2017-09-09 01:56:29,177|utils.py:76 - run] Running: indi_eval -h 127.0.0.1 -p 7624 -wo -t 30 "FLI CCD.CONNECTION._STATE"==0
+[2017-09-09 01:56:29,185|camera.py:69 - disconnect] [91m*** FLI CCD Disconnected! ***[0m
+[2017-09-09 01:56:30,187|camera.py:188 - disconnect] Disconnecting FLI CFW from indiserver.
+[2017-09-09 01:56:30,187|utils.py:93 - get2] Getting "FLI CFW.CONNECTION.CONNECT._STATE" properties
+[2017-09-09 01:56:30,187|utils.py:76 - run] Running: indi_getprop -h 127.0.0.1 -p 7624 FLI CFW.CONNECTION.CONNECT._STATE
+[2017-09-09 01:56:30,196|utils.py:103 - set2] Setting: FLI CFW.CONNECTION.CONNECT=Off;DISCONNECT=On
+[2017-09-09 01:56:30,196|utils.py:76 - run] Running: indi_setprop -t 30 -h 127.0.0.1 -p 7624 FLI CFW.CONNECTION.CONNECT=Off;DISCONNECT=On
+[2017-09-09 01:56:30,205|utils.py:118 - eval2] Evaluation: ['-wo', '-t', '30', '"FLI CFW.CONNECTION._STATE"==0']
+[2017-09-09 01:56:30,205|utils.py:76 - run] Running: indi_eval -h 127.0.0.1 -p 7624 -wo -t 30 "FLI CFW.CONNECTION._STATE"==0
+[2017-09-09 01:56:30,213|camera.py:197 - disconnect] [91m*** FLI CFW Disconnected! ***[0m

@@ -24,7 +24,8 @@ cy = '\033[36m'#cyan
 log = logging.getLogger(__name__)
 
 #~ #TODO: best implementation
-Ut = utils.Utils("CCD Simulator")
+Ut_c = utils.Utils("FLI CCD") #"CCD Simulator")
+Ut_f = utils.Utils("FLI CFW")
 
 
 class Camera(object):
@@ -44,12 +45,12 @@ class Camera(object):
         
         log.info("Connecting {} to indiserver.".format(self.ccd))
         
-        if Ut.get2("CONNECTION.CONNECT._STATE") == "On":
+        if Ut_c.get2("CONNECTION.CONNECT._STATE") == "On":
             log.warning("{}***  {} already connected ***{}".format(cw,self.ccd,rc))
         cmd = "CONNECTION.CONNECT=On;DISCONNECT=Off"
-        Ut.set2(cmd)
+        Ut_c.set2(cmd)
         cmd = 'CONNECTION._STATE\"==1'
-        Ut.eval2(cmd)
+        Ut_c.eval2(cmd)
 
         log.info("{}***  {}  Connected!  ***{}".format(cg,self.ccd,rc))
 
@@ -58,12 +59,12 @@ class Camera(object):
         
         log.info("Disconnecting {} from indiserver.".format(self.ccd))
         
-        if Ut.get2("CONNECTION.CONNECT._STATE") == "Off":
+        if Ut_c.get2("CONNECTION.CONNECT._STATE") == "Off":
             log.warning("{}***  {} already disconnected ***{}".format(cw,self.ccd,rc))
         cmd = "CONNECTION.CONNECT=Off;DISCONNECT=On"
-        Ut.set2(cmd)
+        Ut_c.set2(cmd)
         cmd = 'CONNECTION._STATE\"==0'
-        Ut.eval2(cmd)
+        Ut_c.eval2(cmd)
 
         log.info("{}*** {} Disconnected! ***{}".format(cr,self.ccd,rc))
 
@@ -73,12 +74,12 @@ class Camera(object):
 
         log.info('Starting {}s. exposure ({}/{}).'.format(exp_time,frame,nframes))
 
-        path = Ut.get2("UPLOAD_SETTINGS.UPLOAD_DIR")
+        path = Ut_c.get2("UPLOAD_SETTINGS.UPLOAD_DIR")
 
-        cmd1 = Ut._set+["-t",str(exp_time+2),
+        cmd1 = Ut_c._set+["-t",str(exp_time+2),
                         "{}.CCD_EXPOSURE.CCD_EXPOSURE_VALUE={}".format(self.ccd,exp_time)]
 
-        cmd2 = Ut._get+["-t",str(exp_time+20),"{}.CCD1.CCD1".format(self.ccd)] #Client UPLOAD
+        cmd2 = Ut_c._get+["-t",str(exp_time+20),"{}.CCD1.CCD1".format(self.ccd)] #Client UPLOAD
 
         log.debug('Running: {}'.format(' '.join(cmd1)))
         subprocess.check_call(cmd1)
@@ -87,7 +88,7 @@ class Camera(object):
         subprocess.check_call(cmd2)
 
         log.info('    Exposure finished.')
-        log.info('    File {}{}{} succesfully created.'.format(cy,Ut.lastest_file(path),rc))
+        log.info('    File {}{}{} succesfully created.'.format(cy,Ut_c.lastest_file(path),rc))
 
         return
 
@@ -95,8 +96,8 @@ class Camera(object):
     def set_filter(self,afilter):
 
         log.info('Setting {} filter'.format(afilter))
-        Ut.set2("FILTER_SLOT.FILTER_SLOT_VALUE={}".format(afilter))
-        Ut.eval2("FILTER_SLOT.FILTER_SLOT_VALUE\"=={}".format(afilter))
+        Ut_c.set2("FILTER_SLOT.FILTER_SLOT_VALUE={}".format(afilter))
+        Ut_c.eval2("FILTER_SLOT.FILTER_SLOT_VALUE\"=={}".format(afilter))
         log.info('Done. Filter at {} position'.format(afilter))
 
         return
@@ -107,7 +108,7 @@ class Camera(object):
 
         log.info('Setting {} files path'.format(adir))
 
-        Ut.set2("UPLOAD_SETTINGS.UPLOAD_DIR={}".format(adir))
+        Ut_c.set2("UPLOAD_SETTINGS.UPLOAD_DIR={}".format(adir))
         #~ sleep(1)#TODO: refine timeout for telescope hardware!
         log.debug('    Done. Files path = {} '.format(adir))
 
@@ -121,7 +122,7 @@ class Camera(object):
 
         log.info('Setting {} files prefix'.format(prefix))
 
-        Ut.set2("UPLOAD_SETTINGS.UPLOAD_PREFIX={}".format(prefix))
+        Ut_c.set2("UPLOAD_SETTINGS.UPLOAD_PREFIX={}".format(prefix))
         log.debug('    Done. Files prefix = {} '.format(prefix))
 
         return
@@ -131,7 +132,7 @@ class Camera(object):
 
         log.info('Setting fits header OBJECT={}.'.format(name))
 
-        Ut.set2("FITS_HEADER.FITS_OBJECT={}".format(name))
+        Ut_c.set2("FITS_HEADER.FITS_OBJECT={}".format(name))
         #~ sleep(1)#TODO: refine timeout for telescope hardware!
         log.debug('    Done. Fits header OBJECT={}'.format(name))
 
@@ -148,15 +149,15 @@ class Camera(object):
 
         cmd1 = ["{}.UPLOAD_MODE.UPLOAD_CLIENT={};UPLOAD_LOCAL={};UPLOAD_BOTH={}".format(
                 self.ccd,*(val))]
-        Ut.run(Ut._set+cmd1,check=False)
+        Ut_c.run(Ut_c._set+cmd1,check=False)
 
 
     def get_all_properties(self,timeout=2,verbose=False):
-        return Ut.get_all_properties(timeout, verbose)
+        return Ut_c.get_all_properties(timeout, verbose)
 
 
 
-class Filter():
+class Filter(object):
 
 
     def __init__(self, filters, name, address, port, timeout):
@@ -168,6 +169,35 @@ class Filter():
         self.timeout = 2.0
         self.ccd_properties = {}
 
+    def connect(self):
+        
+        log.info("Connecting {} to indiserver.".format(self.fltw))
+        
+        if Ut_f.get2("CONNECTION.CONNECT._STATE") == "On":
+            log.warning("{}***  {} already connected ***{}".format(cw,self.fltw,rc))
+        cmd = "CONNECTION.CONNECT=On;DISCONNECT=Off"
+        Ut_f.set2(cmd)
+        cmd = 'CONNECTION._STATE\"==1'
+        Ut_f.eval2(cmd)
+
+        log.info("{}***  {}  Connected!  ***{}".format(cg,self.fltw,rc))
+
+
+    def disconnect(self):
+        
+        log.info("Disconnecting {} from indiserver.".format(self.fltw))
+        
+        if Ut_f.get2("CONNECTION.CONNECT._STATE") == "Off":
+            log.warning("{}***  {} already disconnected ***{}".format(cw,self.fltw,rc))
+        cmd = "CONNECTION.CONNECT=Off;DISCONNECT=On"
+        Ut_f.set2(cmd)
+        cmd = 'CONNECTION._STATE\"==0'
+        Ut_f.eval2(cmd)
+
+        log.info("{}*** {} Disconnected! ***{}".format(cr,self.fltw,rc))
+
+
+
 
     def setf(self,name):
 
@@ -175,10 +205,10 @@ class Filter():
         
         
         slot = next(key for key,val in self.filters.items() if val==name)
-        Ut.set2("FILTER_SLOT.FILTER_SLOT_VALUE={}".format(slot))
+        Ut_f.set2("FILTER_SLOT.FILTER_SLOT_VALUE={}".format(slot))
         sleep(self.timeout)
-        #~ log.info("++++"+Ut.eval2("FILTER_SLOT.FILTER_SLOT_VALUE\"=={}".format(slot), verbose = True))
-        while Ut.eval2("FILTER_SLOT.FILTER_SLOT_VALUE\"=={}".format(slot)) != 0:
+        #~ log.info("++++"+Ut_f.eval2("FILTER_SLOT.FILTER_SLOT_VALUE\"=={}".format(slot), verbose = True))
+        while Ut_f.eval2("FILTER_SLOT.FILTER_SLOT_VALUE\"=={}".format(slot)) != 0:
             log.info("changinf filter to:"+slot)
             sleep(self.timeout)
         log.info("    Done. Filter {}: '{}' in place.".format(slot,self.filters[slot]))
@@ -191,7 +221,7 @@ class Filter():
 
         try:
             cmd = "FILTER_SLOT.FILTER_SLOT_VALUE"
-            slot = Ut.get2(cmd)
+            slot = Ut_f.get2(cmd)
             log.info("Filter {}: '{}' in place.".format(
                     slot,self.filters[slot]))
             return self.filters[slot]

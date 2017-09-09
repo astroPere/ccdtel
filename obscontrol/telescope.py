@@ -21,7 +21,7 @@ cy = '\033[36m'#cyan
 
 #TODO: From config file??####################
 
-tel = "Telescope Simulator"
+tel = 'Losmandy Gemini' #"Telescope Simulator"
 port = '7624'
 address = '127.0.0.1'
 
@@ -86,6 +86,7 @@ class Telescope(object):
         sleep(self.timeout) #TODO: refine timeout for telescope hardware!
 
         while Ut.eval2("EQUATORIAL_EOD_COORD._STATE\"==1") !=0:
+        #~ while Ut.get2("EQUATORIAL_EOD_COORD.RA._STATE"):
             sleep(self.timeout)
 
         log.info('    Done. {} at target position.'.format(self.tel))

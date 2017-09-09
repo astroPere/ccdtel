@@ -31,7 +31,8 @@ port = '7624'
 address = '127.0.0.1'
 
 a_get  = ["indi_getprop","-h",str(address),"-p",str(port)]
-a_set  = ["indi_setprop","-h",str(address),"-p",str(port)]
+#~ a_set  = ["indi_setprop","-h",str(address),"-p",str(port)]
+a_set  = ["indi_setprop","-t","30","-h",str(address),"-p",str(port)]
 a_eval = ["indi_eval","-h",str(address),"-p",str(port)]
 
 ##############################################
@@ -109,10 +110,11 @@ class Utils(object):
     def eval2(self,prop,check=False, verbose=False):
 
         v=""
-        if verbose: v="-o"
+        if verbose: v="o"
+        cmd = ["-w"+v,"-t","30","\"{}.{}".format(str(self.d),prop)]
         #~ cmd = ["-w"+v,"-t","30","\"{}.{}".format(str(self.d),prop)]
         #~ cmd = ["-e","-t","30","\"{}.{}".format(str(self.d),prop)]
-        cmd = ["-t","30","\"{}.{}".format(str(self.d),prop)]
+        #~ cmd = ["-t","30","\"{}.{}".format(str(self.d),prop)]
         log.debug('Evaluation: {}'.format(cmd))
         state = (self.run(self._eval+cmd,check))
 
