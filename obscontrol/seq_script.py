@@ -40,7 +40,7 @@ formatter  = logging.Formatter("[%(asctime)s|%(filename)s:%(lineno)s - %(funcNam
 #~ formatter1 = logging.Formatter('%(asctime)s > %(message)s')
 formatter1 = logging.Formatter(' > %(message)s')
 #File logger
-fh = logging.FileHandler('shtel.log','w')
+fh = logging.FileHandler('fli_gemini.log','a')
 fh.setLevel(logging.DEBUG)
 fh.setFormatter(formatter)
 log.addHandler(fh)
@@ -253,7 +253,7 @@ def track(t):
     return
 
 def observe(i):
-    pr(i)
+
     log.debug('Executing observe={}'.format(i))
     t = pstoi(i,'pt')
     track(t)
@@ -308,7 +308,7 @@ def exec_wait(edatetime):
     exectime = datetime.strptime(edatetime,'%Y%m%d%H:%M:%S')
     delay = int((exectime-datetime.utcnow()).total_seconds())
     #TODO: Should MIN/MAX allowed delay be configured??
-    if -60 < delay < 60:#in seconds!
+    if -60 <= delay <= 60:#in seconds!
         log.info('    Line in time, {}s delayed'.format(delay))
         return True 
     elif 28800 > delay > 60:#in seconds (28800s = 8 hours!)
@@ -327,15 +327,16 @@ def main(args):
     if not check_indi():
         sys.exit()
     #Connect devices to indiserver
-    telescope.connect()
-    camera.connect()
-    filterw.connect()
+    telescope.connect()### TODO: FIFO connection!!! <---!!!
+    camera.connect()### TODO: FIFO connection!
+    filterw.connect()### TODO: FIFO connection!
     #Initial delay to ensure connections are ready
     sleep(2)
     #Setting camera upload mode
     camera.set_upload_mode("BOTH")
     #Reading properties
     telescope.get_all_properties()
+    sleep(1)
     camera.get_all_properties()
     #Unpark telescope
     telescope.park('Off') #TODO!!!
@@ -357,7 +358,7 @@ def main(args):
                 if exec_wait(xline.edate+xline.etime):
                     exec "{}('{}')".format(xline.function.lower(),xline.pti.lower())
                 
-    #~ sleep(2)
+    sleep(2)
 #*******************************************************************
 
     telescope.park('On') #TODO eval park state!

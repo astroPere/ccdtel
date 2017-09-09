@@ -21,7 +21,7 @@ cy = '\033[36m'#cyan
 
 #TODO: From config file??####################
 
-tel = 'Losmandy Gemini' #"Telescope Simulator"
+tel =  "Losmandy Gemini"#"LX200 Generic"# #"Telescope Simulator"
 port = '7624'
 address = '127.0.0.1'
 
@@ -41,7 +41,7 @@ class Telescope(object):
         self.tel = name
         self.adress = address
         self.port = port
-        self.timeout = 2.0
+        self.timeout = 10
         self.tel_properties = {}
 
     
@@ -83,11 +83,11 @@ class Telescope(object):
         cmd = Ut._set+["{}.EQUATORIAL_EOD_COORD.RA={};DEC={}".format(
                            str(self.tel),str(ra),str(dec))]
         Ut.run(cmd)
-        sleep(self.timeout) #TODO: refine timeout for telescope hardware!
+        sleep(3)
+        #~ sleep(self.timeout) #TODO: refine timeout for telescope hardware!
 
         while Ut.eval2("EQUATORIAL_EOD_COORD._STATE\"==1") !=0:
-        #~ while Ut.get2("EQUATORIAL_EOD_COORD.RA._STATE"):
-            sleep(self.timeout)
+            sleep(1)
 
         log.info('    Done. {} at target position.'.format(self.tel))
 
@@ -124,14 +124,14 @@ class Telescope(object):
                 self.tel,str(park),str(unpark))]
         cmd = Ut._set + cmd1
         Ut.run(cmd)#TODO: refine timeout for telescope hardware!
-        sleep(self.timeout)
+        sleep(2)
         if value=='On':Ut.eval2("EQUATORIAL_EOD_COORD._STATE\"==0")
         
         log.info("    Done. {}  PARK = '{}'.".format(self.tel,park))
 
 
 
-    def get_all_properties(self,timeout=2,verbose=False):
+    def get_all_properties(self,timeout=10,verbose=False):
         return Ut.get_all_properties(timeout, verbose)
 
 
