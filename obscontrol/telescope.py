@@ -20,7 +20,7 @@ cb = '\033[94m'#blue
 cy = '\033[36m'#cyan
 
 #TODO: From config file??####################
-
+#TODO: Verify security limits when tracking/slew!
 tel =  "Losmandy Gemini"#"LX200 Generic"# #"Telescope Simulator"
 port = '7624'
 address = '127.0.0.1'
@@ -131,7 +131,8 @@ class Telescope(object):
 
 
 
-    def get_all_properties(self,timeout=10,verbose=False):
+    #~ def get_all_properties(self,timeout=10,verbose=False):
+    def get_all_properties(self,timeout=2,verbose=False):
         return Ut.get_all_properties(timeout, verbose)
 
 

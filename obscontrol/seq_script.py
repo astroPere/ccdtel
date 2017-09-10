@@ -127,6 +127,8 @@ def md5Checksum(filePath):
 #read config file
 conf = config()
 #Initialize general parameters
+allowed_delay = conf.get('general', 'allowed_delay')
+max_wait = conf.get('general', 'max_wait')
 exec_file = conf.get('general','exec_file')
 execline_conf = conf.get('general', 'exec_conf')
 
@@ -281,11 +283,12 @@ def exec_wait(edatetime):
     exectime = datetime.strptime(edatetime,'%Y%m%d%H:%M:%S')
     delay = int((exectime-datetime.utcnow()).total_seconds())
     #TODO: Should MIN/MAX allowed delay be configured??
-    if -60 <= delay <= 60:#in seconds!
+    #~ if -60 <= delay <= 60:#in seconds!
+    if -(int(allowed_delay)) <= delay <= int(allowed_delay):#in seconds!
         log.info('    Line in time, {}s delayed'.format(delay))
         return True 
-    elif 28800 > delay > 60:#in seconds (28800s = 8 hours!)
-        log.info('... Waiting {}s -> {}'.format(delay,exectime))
+    elif int(max_wait) > delay > int(allowed_delay):#in seconds (28800s = 8 hours!)
+        log.info(cw+'... Waiting {}s -> {}'.format(delay,exectime)+rc)
         while exectime >= datetime.utcnow():
             sleep(1)
         return True
