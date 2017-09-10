@@ -2,7 +2,7 @@ obscontrol/camera.pyc
 obscontrol/sutils.pyc
 obscontrol/telescope.pyc
 obscontrol/utils.pyc
-#obscontrol/shtel.log
+obscontrol/*.log
 obscontrol/*.fits
 obscontrol/*.fit
 obscontrol/*.pyc
