@@ -22,6 +22,7 @@ import sys
 import sequence_parser as seqp
 import camera as ccd
 import telescope as tel
+import filterwheel as fltw
 
 
 rc = '\033[0m' #reset color
@@ -40,7 +41,9 @@ formatter  = logging.Formatter("[%(asctime)s|%(filename)s:%(lineno)s - %(funcNam
 #~ formatter1 = logging.Formatter('%(asctime)s > %(message)s')
 formatter1 = logging.Formatter(' > %(message)s')
 #File logger
-fh = logging.FileHandler('fli_gemini.log','a')
+logfile = datetime.strftime(datetime.utcnow(),'%Y%m%d.log')
+#~ fh = logging.FileHandler('fli_gemini.log','a')
+fh = logging.FileHandler(logfile,'a')
 fh.setLevel(logging.DEBUG)
 fh.setFormatter(formatter)
 log.addHandler(fh)
@@ -55,8 +58,9 @@ log.addHandler(ch)
 
 
 def config():
-    
-    config_file="config.cfg"
+
+    #~ config_file="config.cfg"
+    config_file="simulator_config.cfg"
     log.info("Loading configuration file: '{}'".format(config_file))
     # Load the configuration file
     with open(config_file) as f:
@@ -71,10 +75,10 @@ def config():
             log.debug("    {}: {}".format(options, config.get(section, options)))
 
     return config
-    
-    
+
+
 def parsing_config_file(data_file, data_conf):
-    
+
     data_conf = getlist(data_conf)
     i = namedtuple(*data_conf)
     data_list=[]
@@ -87,12 +91,12 @@ def parsing_config_file(data_file, data_conf):
                 data_list.append(i(_name,*_values))
 
     return data_list
-    
-    
+
+
 def getlist(option, sep=',', chars=None):
-    """Return a list from a ConfigParser option. By default, 
+    """Return a list from a ConfigParser option. By default,
        split on a comma and strip whitespaces."""
-    return [ chunk.strip(chars) for chunk in option.split(sep) ]
+    return [ piece.strip(chars) for piece in option.split(sep) ]
 
 
 
@@ -157,21 +161,21 @@ fits_path = conf.get('images','download_path')
 
 
 #Initialize telescope, camera, filterwheel
-camera = ccd.Camera(conf.get('camera','name'),
-                    conf.get('camera','address'),
-                    conf.get('camera','port'),
-                    conf.get('camera','timeout'))
+camera = ccd.Camera(name = conf.get('camera','name'),
+                    address = conf.get('camera','address'),
+                    port = conf.get('camera','port'),
+                    timeout = conf.get('camera','timeout'))
 
-telescope = tel.Telescope(conf.get('telescope','name'),
-                          conf.get('telescope','address'),
-                          conf.get('telescope','port'),
-                          conf.get('telescope','timeout'))
+telescope = tel.Telescope(name = conf.get('telescope','name'),
+                          address = conf.get('telescope','address'),
+                          port = conf.get('telescope','port'),
+                          timeout = conf.get('telescope','timeout'))
 
-filterw = ccd.Filter(filters,
-                     conf.get('filterw','name'),
-                     conf.get('filterw','address'),
-                     conf.get('filterw','port'),
-                     conf.get('filterw','timeout'))
+filterw = fltw.FilterWheel(name = conf.get('filterw','name'),
+                           address = conf.get('filterw','address'),
+                           port = conf.get('filterw','port'),
+                           timeout = conf.get('filterw','timeout'),
+                           filters = filters)
 
 
 
@@ -190,7 +194,7 @@ def pr(s):
 def check_indi():
 
     cmd = ['ps','--no-headers','-C','indiserver','-o','pid']
-    log.debug('Checking if indiverver is running'+('').join(cmd))
+    log.debug('Checking if indiverver is running: {}'.format((' ').join(cmd)))
 
     try:
         subprocess.check_output(cmd)
@@ -201,7 +205,7 @@ def check_indi():
         log.error(cr+"### INDISERVER IS NOT RUNNING ###"+rc)
         return False
 
-    
+
 
 def pstoi(toi,text_pattern):
     """extract name = x from toi id. = j"""
@@ -217,11 +221,10 @@ def pstoi(toi,text_pattern):
 
 
 def track(t):
-    
+
     log.debug('Executing track={}'.format(t))
     t = pstoi(t,'pt')
     atarget = next(trg for trg in targets if trg.ID==t)
-    #~ t_ra, t_dec = coord2EOD(atarget,atarget.equinox)
     t_coord = coord2EOD(atarget,atarget.equinox)
     log.info('Looking for cooordinates: {}'.format(t_coord))
     telescope.target_coord(*t_coord)
@@ -232,17 +235,38 @@ def observe(i):
     log.debug('Executing observe={}'.format(i))
     t = pstoi(i,'pt')
     track(t)
-    
+
     i_instr = pstoi(i,'pi')
     pr(i_instr)
     ainstr = next(ins for ins in instruments if pstoi(ins.ID,'pi')==i_instr)
     i_targ = pstoi(i,'pt')
     obj_name = next(trg.obj_name for trg in targets if pstoi(trg.ID,'pt')==i_targ)
-    
+
     camera.upload_object(obj_name)
     camera.upload_path(fits_path+obj_name+"/")
     camera.upload_prefix("_"+obj_name+"_")
-    
+
+    filterw.setf(ainstr.ifilter)
+
+    for x in range(int(ainstr.exposures)):
+        camera.expose(float(ainstr.exp_time),x+1,ainstr.exposures)
+
+
+
+def expose(i):
+
+    log.debug('Executing expose={}'.format(i))
+
+    i_instr = pstoi(i,'pi')
+    pr(i_instr)
+    ainstr = next(ins for ins in instruments if pstoi(ins.ID,'pi')==i_instr)
+    i_targ = pstoi(i,'pt')
+    obj_name = next(trg.obj_name for trg in targets if pstoi(trg.ID,'pt')==i_targ)
+
+    camera.upload_object(obj_name)
+    camera.upload_path(fits_path+obj_name+"/")
+    camera.upload_prefix("_"+obj_name+"_")
+
     filterw.setf(ainstr.ifilter)
 
     for x in range(int(ainstr.exposures)):
@@ -250,7 +274,7 @@ def observe(i):
 
 
 def coord2EOD(atarget,equinox):
-    
+
     log.debug('Parsing EOD coords. targ={}'.format(atarget))
     #coordinates from targets file
     atarget = SkyCoord(atarget.coord_value,
@@ -261,95 +285,106 @@ def coord2EOD(atarget,equinox):
     log.debug('Returned coords.RA:{} DEC:{}'.format(
               otarget.ra.hour, otarget.dec.degree))
     return otarget.ra.hour, otarget.dec.degree
-  
-  
+
+
 def parsing_exec_line(aline):
 
     log.debug('Parsing line: {}'.format(aline))
-    
+
     _execline_conf = getlist(execline_conf)
     ex = namedtuple(*_execline_conf)
     aline = [_line.strip() for _line in aline.split(',') if len(_line)>0]
     aline = ex(*aline)
     log.debug('Parsed  line: {}'.format(aline))
-    
+
     return aline
 
 
 def exec_wait(edatetime):
-    
+
     log.debug('Executing wait for {}'.format(edatetime))
-    
+
     exectime = datetime.strptime(edatetime,'%Y%m%d%H:%M:%S')
     delay = int((exectime-datetime.utcnow()).total_seconds())
     #TODO: Should MIN/MAX allowed delay be configured??
     #~ if -60 <= delay <= 60:#in seconds!
     if -(int(allowed_delay)) <= delay <= int(allowed_delay):#in seconds!
         log.info('    Line in time, {}s delayed'.format(delay))
-        return True 
+        return True
     elif int(max_wait) > delay > int(allowed_delay):#in seconds (28800s = 8 hours!)
         log.info(cw+'... Waiting {}s -> {}'.format(delay,exectime)+rc)
         while exectime >= datetime.utcnow():
             sleep(1)
         return True
-    else: 
+    else:
         log.warning(cw+'    Skipping line due to a {}s delay.'.format(delay)+rc)
         return False
-    
+
 
 def main(args):
 
-    #~ #First of all, check if indiserver is running
-    if not check_indi():
-        sys.exit()
-    #Connect devices to indiserver
-    telescope.connect()### TODO: FIFO connection!!! <---!!!
-    camera.connect()### TODO: FIFO connection!
-    filterw.connect()### TODO: FIFO connection!
-    #Initial delay to ensure connections are ready
-    sleep(2)
-    #Setting camera upload mode
-    camera.set_upload_mode("BOTH")
-    #Reading properties
-    telescope.get_all_properties()
-    sleep(1)
-    camera.get_all_properties()
-    #Unpark telescope
-    telescope.park('Off') #TODO!!!
-    #Getting present filter
-    filterw.getf
+    try:
 
-#*******************************************************************
+        #~ #First of all, check if indiserver is running
+        if not check_indi():
+            sys.exit()
 
-    lcount = 0
-    with open(exec_file,'r') as f:
-        for line in f:
-             if len(line.strip())>0 and not line.startswith('#'):
-                lcount += 1
-                xline=line.strip('\n').strip()
-                xline = parsing_exec_line(xline)
-                log.info("Executing line #{}:  {} {}".format(
-                         lcount,xline.function,xline.pti.lower()))                
-                #~ #waiting for execution date/time
-                if exec_wait(xline.edate+xline.etime):
-                    exec "{}('{}')".format(xline.function.lower(),xline.pti.lower())
-                
-    sleep(2)
-#*******************************************************************
+        #Connect devices to indiserver
+        telescope.connect()### TODO: FIFO connection!!! <---!!!
+        camera.connect()### TODO: FIFO connection!
+        filterw.connect()### TODO: FIFO connection!
 
-    telescope.park('On') #TODO eval park state!
+        #Initial delay to ensure connections are ready
+        sleep(2)
+        #Setting camera upload mode
+        camera.set_upload_mode("BOTH")
+        #Reading properties
 
-    telescope.disconnect()
-    sleep(1)
-    camera.disconnect()
-    sleep(1)
-    filterw.disconnect()
-    sleep(1)
+        telescope.get_all_properties()
+        #~ sleep(1)
+        camera.get_all_properties()
+        #~ sleep(1)
+        filterw.get_all_properties()
+        #Unpark telescope
+        telescope.park('Off') #TODO!!!
+        #Getting present filter
+        filterw.getf
+
+    #*******************************************************************
+
+        lcount = 0
+        with open(exec_file,'r') as f:
+            for line in f:
+                 if len(line.strip())>0 and not line.startswith('#'):
+                    lcount += 1
+                    xline=line.strip('\n').strip()
+                    xline = parsing_exec_line(xline)
+                    log.info("Executing line #{}:  {} {}".format(
+                             lcount,xline.function,xline.pti.lower()))
+                    #~ #waiting for execution date/time
+                    if exec_wait(xline.edate+xline.etime):
+                        exec "{}('{}')".format(xline.function.lower(),xline.pti.lower())
+
+        sleep(2)
+    #*******************************************************************
+
+        telescope.park('On') #TODO eval park state!
+
+        telescope.disconnect()
+        sleep(1)
+        camera.disconnect()
+        sleep(1)
+        filterw.disconnect()
+        sleep(1)
+    except(KeyboardInterrupt,SystemExit):
+        log.warning(cw+"TELESCOPE HALTED!"+rc)
+        telescope.halt
+        telescope.disconnect()
+        camera.disconnect()
+        filterw.disconnect()
+        #~ raise
 
 
-    
-    
-    sys.exit()
 
     return 0
 

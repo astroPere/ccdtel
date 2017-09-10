@@ -42,12 +42,7 @@ log = logging.getLogger(__name__)
 
 
 
-
-class UtilsStandardError(StandardError):
-    pass
-
-
-class GetPropertyError(subprocess.CalledProcessError):
+class GetPropertyError(Exception):
     pass
 
 
@@ -56,6 +51,10 @@ class SetPropertyError(subprocess.CalledProcessError):
 
 
 class EvalPropertyError(subprocess.CalledProcessError):
+    pass
+
+
+class RunCommandError:
     pass
 
 
@@ -80,7 +79,7 @@ class Utils(object):
                 return subprocess.call(cmd)
 
         except subprocess.CalledProcessError as e:
-            log.error('{}ERROR:{}{}'.format(cr,e,rc))
+            log.error('{}ERROR RUNNING: {}{}'.format(cr,e.cmd,rc))
             return False
 
 
@@ -91,6 +90,7 @@ class Utils(object):
         fields ="{}"+ ".{}"*len(prop)
 
         log.debug(("Getting \""+fields+"\" properties").format(self.d,*prop))
+        #~ try:
         value = (self.run(self._get+[fields.format(
                  str(self.d),*prop)],check=True).split('='))[-1].strip()
 
@@ -107,8 +107,8 @@ class Utils(object):
 
 
 
-    def eval2(self,prop,check=False,verbose=True):
-		#TODO: refine timeouts!!!
+    def eval2(self,prop,check=False,verbose=False):
+        #TODO: refine timeouts!!!
         v=""
         if verbose: v="o"
         #~ cmd = ["-w"+v,"-t","5","\"{}.{}".format(str(self.d),prop)]
@@ -135,33 +135,34 @@ class Utils(object):
 
         log.info("Getting all {} properties.".format(self.d))
 
-        self.d_properties = {}
+        self.device_properties = {}
         #TODO: Verify timeout value with real hardware
-        cmd=self._get+["-t",str(timeout),"{}.*.*".format(str(self.d))]
+        #~ cmd=self._get+["-t",str(timeout),"{}.*.*".format(str(self.d))]
+        cmd=self._get+["-1","{}.*.*".format(str(self.d))] #maybe usefull??
 
         lines = [msg.split('.',2) for msg in self.run(
                 cmd,check=True).strip('\n').split('\n')]
 
         for key, items in groupby(lines, itemgetter(1)):
-            self.d_properties[key]={}
+            self.device_properties[key]={}
             if verbose:
                 log.info('-'*60)
                 log.info('{}:'.format(key))
             else:
                 log.debug(key)
             for subitem in items:
-                self.d_properties[key].update(dict([subitem[-1].split('=')]))
+                self.device_properties[key].update(dict([subitem[-1].split('=')]))
             if verbose:
-                for element, value in self.d_properties[key].items():
+                for element, value in self.device_properties[key].items():
                     log.info('    {} = {}'.format(element, value))
             else:
-                for element, value in self.d_properties[key].items():
+                for element, value in self.device_properties[key].items():
                     log.debug('   {} = {}'.format(element, value))
 
         log.debug('    Total {} properties = {}.'.format(
-                        self.d,len(self.d_properties)))
+                        self.d,len(self.device_properties)))
 
-        return self.d_properties
+        return self.device_properties
 
 
     def parse_coord(self,coord):
