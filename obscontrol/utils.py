@@ -111,8 +111,7 @@ class Utils(object):
         #TODO: refine timeouts!!!
         v=""
         if verbose: v="o"
-        #~ cmd = ["-w"+v,"-t","5","\"{}.{}".format(str(self.d),prop)]
-        cmd = ["-w"+v,"\"{}.{}".format(str(self.d),prop)]
+        cmd = ["-w"+v,"-t","5","\"{}.{}".format(str(self.d),prop)]
         log.debug('Evaluation: {}'.format(cmd))
         state = (self.run(self._eval+cmd,check))
 

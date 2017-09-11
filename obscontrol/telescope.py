@@ -27,13 +27,14 @@ log = logging.getLogger(__name__)
 class Telescope(object):
 
     
-    def __init__(self, **kargs):#name, address, port, timeout, filters):
+    def __init__(self, **kargs):
         
         self.Ut = utils.Utils(kargs['name'])
         self.tel = kargs['name']
         self.adress = kargs['address']
         self.port = kargs['port']
-        self.timeout = str(kargs['timeout'])
+        self.timeout = float(kargs['timeout'])
+        self.settle_timeout = float(kargs['settle_timeout'])
         self.tel_properties = {}
 
     
@@ -75,13 +76,15 @@ class Telescope(object):
         cmd = self.Ut._set+["{}.EQUATORIAL_EOD_COORD.RA={};DEC={}".format(
                            str(self.tel),str(ra),str(dec))]
         self.Ut.run(cmd)
-        sleep(3)
-        #~ sleep(self.timeout) #TODO: refine timeout for telescope hardware!
+        sleep(self.timeout) #TODO: refine timeout for telescope hardware!
 
-        while self.Ut.eval2("EQUATORIAL_EOD_COORD._STATE\"==1") !=0:
-            sleep(1)
-
-        log.info('    Done. {} at target position.'.format(self.tel))
+        #~ while self.Ut.eval2("EQUATORIAL_EOD_COORD._STATE\"==1", verbose=True) !=0:
+            #~ sleep(1)
+        self.Ut.eval2("EQUATORIAL_EOD_COORD._STATE\"==1")
+        sleep(1)
+        log.info('    Done. {} at target position. Wait for telescope settle.'.format(self.tel))
+        sleep(self.settle_timeout)
+        
 
 
 
@@ -116,7 +119,8 @@ class Telescope(object):
                 self.tel,str(park),str(unpark))]
         cmd = self.Ut._set + cmd1
         self.Ut.run(cmd)#TODO: refine timeout for telescope hardware!
-        sleep(2)
+        #~ sleep(2)
+        sleep(self.timeout)
         if value=='On':self.Ut.eval2("EQUATORIAL_EOD_COORD._STATE\"==0")
         
         log.info("    Done. {}  PARK = '{}'.".format(self.tel,park))

@@ -81,10 +81,9 @@ class FilterWheel(object):
         
         slot = next(key for key,val in self.filters.items() if val==name)
         self.Ut.set2("FILTER_SLOT.FILTER_SLOT_VALUE={}".format(slot))
-        sleep(self.timeout)
-        #~ log.info("++++"+self.Ut.eval2("FILTER_SLOT.FILTER_SLOT_VALUE\"=={}".format(slot), verbose = True))
+        sleep(1)
         while self.Ut.eval2("FILTER_SLOT.FILTER_SLOT_VALUE\"=={}".format(slot)) != 0:
-            log.info("changinf filter to:"+slot)
+            log.debug("Switching filter to: {}: '{}'".format(slot,self.filters[slot]))
             sleep(self.timeout)
         log.info("    Done. Filter {}: '{}' in place.".format(slot,self.filters[slot]))
 

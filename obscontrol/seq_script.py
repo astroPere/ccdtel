@@ -60,7 +60,8 @@ log.addHandler(ch)
 def config():
 
     #~ config_file="config.cfg"
-    config_file="simulator_config.cfg"
+    #~ config_file="simulator_config.cfg"
+    config_file="gemini_fli_config.cfg"
     log.info("Loading configuration file: '{}'".format(config_file))
     # Load the configuration file
     with open(config_file) as f:
@@ -169,7 +170,8 @@ camera = ccd.Camera(name = conf.get('camera','name'),
 telescope = tel.Telescope(name = conf.get('telescope','name'),
                           address = conf.get('telescope','address'),
                           port = conf.get('telescope','port'),
-                          timeout = conf.get('telescope','timeout'))
+                          timeout = conf.get('telescope','timeout'),
+                          settle_timeout = conf.get('telescope','settle_timeout'))
 
 filterw = fltw.FilterWheel(name = conf.get('filterw','name'),
                            address = conf.get('filterw','address'),
@@ -226,7 +228,7 @@ def track(t):
     t = pstoi(t,'pt')
     atarget = next(trg for trg in targets if trg.ID==t)
     t_coord = coord2EOD(atarget,atarget.equinox)
-    log.info('Looking for cooordinates: {}'.format(t_coord))
+    log.info('Looking for cooordinates: {}.'.format(t_coord[1]))
     telescope.target_coord(*t_coord)
     return
 
@@ -235,9 +237,7 @@ def observe(i):
     log.debug('Executing observe={}'.format(i))
     t = pstoi(i,'pt')
     track(t)
-
     i_instr = pstoi(i,'pi')
-    pr(i_instr)
     ainstr = next(ins for ins in instruments if pstoi(ins.ID,'pi')==i_instr)
     i_targ = pstoi(i,'pt')
     obj_name = next(trg.obj_name for trg in targets if pstoi(trg.ID,'pt')==i_targ)
@@ -258,7 +258,6 @@ def expose(i):
     log.debug('Executing expose={}'.format(i))
 
     i_instr = pstoi(i,'pi')
-    pr(i_instr)
     ainstr = next(ins for ins in instruments if pstoi(ins.ID,'pi')==i_instr)
     i_targ = pstoi(i,'pt')
     obj_name = next(trg.obj_name for trg in targets if pstoi(trg.ID,'pt')==i_targ)
