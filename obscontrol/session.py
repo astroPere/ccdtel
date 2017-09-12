@@ -14,10 +14,12 @@ from collections import namedtuple
 from time import sleep
 from datetime import datetime
 import subprocess
-
+import re
 import camera as ccd
 import telescope as tel
 import filterwheel as fltw
+from astropy import units as u
+from astropy.coordinates import Angle, SkyCoord,FK5,ICRS
 
 import utils
 
@@ -27,7 +29,7 @@ cg ='\033[32m' #green
 cw = '\033[33m'#yellow
 cb = '\033[94m'#blue
 cy = '\033[36m'#cyan
-
+cd = '\033[100m'#gray background
 
 log = logging.getLogger(__name__)
 
@@ -84,7 +86,9 @@ class Session(object):
                                  timeout = conf.get('filterw','timeout'),
                                  filters = self.filters)
 
-
+        self.halt_flag = False
+        
+        
 
 #### Configuration functions ###############################################
 
@@ -128,12 +132,14 @@ class Session(object):
 
     def init(self, at_time=False):
 
-        if not self.check_indi():
-            #~ return 1
-            sis.exit()
+        log.info("Setting GLOBAL STATE = 'On'")
+
+        if not self._check_indi():
+            #~ return -1
+            sys.exit()
 
         if at_time:
-            init_time = self.format_date(at_time)
+            init_time = self._format_date(at_time)
             log.info('Executing wait for {}'.format(init_time))
             delay = int((init_time-datetime.utcnow()).total_seconds())
             #TODO: Should MIN/MAX allowed delay be configured??
@@ -176,24 +182,24 @@ class Session(object):
         lcount = 0
         with open(self.exec_file,'r') as f:
             for line in f:
-                 if line.strip() and not line.startswith('#'):
+                if line.strip() and not line.startswith('#'):
                     lcount += 1
+                    #~ if self.halt_flag:
+                        #~ log.info("Stopped at line #{}".format(lcount))
+                        #~ break
                     xline=line.strip('\n').strip()
-                    xline = self.parsing_exec_line(xline)
+                    xline = self._parsing_exec_line(xline)
                     log.info("Executing line #{}:  {} {}".format(
                              lcount,xline.function,xline.pti.lower()))
                     #~ #waiting for execution date/time
-                    if self.exec_wait(xline.edate+xline.etime):
-                        exec "{}('{}')".format(xline.function.lower(),xline.pti.lower())
+                    if self.wait(xline.edate+xline.etime):
+                        exec "self.{}('{}')".format(xline.function.lower(),xline.pti.lower())
         
         
 
 
-    def pr(s):
-        print('{}{}{}'.format(cd,s,rc))
 
-
-    def check_indi(self):
+    def _check_indi(self):
 
         cmd = ['ps','--no-headers','-C','indiserver','-o','pid']
         log.debug('Checking if indiverver is running: {}'.format((' ').join(cmd)))
@@ -209,7 +215,7 @@ class Session(object):
 
 
 
-    def pstoi(toi,text_pattern):
+    def _pstoi(self,toi,text_pattern):
         """extract name = x from toi id. = j"""
         xxx = ''
         try:
@@ -221,58 +227,56 @@ class Session(object):
             return xxx
 
 
-
-    def track(t):
+    def track(self,t):
 
         log.debug('Executing track={}'.format(t))
-        t = pstoi(t,'pt')
-        atarget = next(trg for trg in targets if trg.ID==t)
-        t_coord = coord2EOD(atarget,atarget.equinox)
-        log.info('Looking for cooordinates: {}.'.format(t_coord[1]))
-        telescope.target_coord(*t_coord)
+        t = self._pstoi(t,'pt')
+        atarget = next(trg for trg in self.targets if trg.ID==t)
+        t_coord = self._coord2EOD(atarget,atarget.equinox)
+        log.info("Looking for '{}' cooordinates: {}.".format(
+                            atarget.obj_name, atarget.coord_value))
+        self.telescope.target_coord(*t_coord)
         return
 
-    def observe(i):
+    def observe(self,i):
 
         log.debug('Executing observe={}'.format(i))
-        t = pstoi(i,'pt')
-        track(t)
-        i_instr = pstoi(i,'pi')
-        ainstr = next(ins for ins in instruments if pstoi(ins.ID,'pi')==i_instr)
-        i_targ = pstoi(i,'pt')
-        obj_name = next(trg.obj_name for trg in targets if pstoi(trg.ID,'pt')==i_targ)
+        t = self._pstoi(i,'pt')
+        self.track(t)
+        i_instr = self._pstoi(i,'pi')
+        ainstr = next(ins for ins in self.instruments if self._pstoi(ins.ID,'pi')==i_instr)
+        i_targ = self._pstoi(i,'pt')
+        obj_name = next(trg.obj_name for trg in self.targets if self._pstoi(trg.ID,'pt')==i_targ)
 
-        camera.upload_object(obj_name)
-        camera.upload_path(fits_path+obj_name+"/")
-        camera.upload_prefix("_"+obj_name+"_")
-
-        filterw.setf(ainstr.ifilter)
+        self.camera.upload_object(obj_name)
+        self.camera.upload_path(self.fits_path+obj_name+"/")
+        self.camera.upload_prefix("_"+obj_name+"_")
+        self.filterw.setf(ainstr.ifilter)
 
         for x in range(int(ainstr.exposures)):
-            camera.expose(float(ainstr.exp_time),x+1,ainstr.exposures)
+            self.camera.expose(float(ainstr.exp_time),x+1,ainstr.exposures)
 
 
 
-    def expose(i):
+    def expose(self,i):
 
         log.debug('Executing expose={}'.format(i))
 
-        i_instr = pstoi(i,'pi')
-        ainstr = next(ins for ins in instruments if pstoi(ins.ID,'pi')==i_instr)
-        i_targ = pstoi(i,'pt')
-        obj_name = next(trg.obj_name for trg in targets if pstoi(trg.ID,'pt')==i_targ)
+        i_instr = self._pstoi(i,'pi')
+        ainstr = next(ins for ins in self.instruments if self._pstoi(ins.ID,'pi')==i_instr)
+        i_targ = self._pstoi(i,'pt')
+        obj_name = next(trg.obj_name for trg in self.targets if self._pstoi(trg.ID,'pt')==i_targ)
 
-        camera.upload_object(obj_name)
-        camera.upload_path(fits_path+obj_name+"/")
-        camera.upload_prefix("_"+obj_name+"_")
-
-        filterw.setf(ainstr.ifilter)
+        self.camera.upload_object(obj_name)
+        self.camera.upload_path(self.fits_path+obj_name+"/")
+        self.camera.upload_prefix("_"+obj_name+"_")
+        self.filterw.setf(ainstr.ifilter)
 
         for x in range(int(ainstr.exposures)):
-            camera.expose(float(ainstr.exp_time),x+1,ainstr.exposures)
+            self.camera.expose(float(ainstr.exp_time),x+1,ainstr.exposures)
 
 
-    def coord2EOD(atarget,equinox):
+    def _coord2EOD(self,atarget,equinox):
 
         log.debug('Parsing EOD coords. targ={}'.format(atarget))
         #coordinates from targets file
@@ -286,7 +290,7 @@ class Session(object):
         return otarget.ra.hour, otarget.dec.degree
 
 
-    def parsing_exec_line(self,aline):
+    def _parsing_exec_line(self,aline):
 
         log.debug('Parsing line: {}'.format(aline))
 
@@ -299,7 +303,7 @@ class Session(object):
         return aline
 
 
-    def exec_wait(self,edatetime):
+    def wait(self,edatetime):
 
         log.debug('Executing wait for {}'.format(edatetime))
 
@@ -310,9 +314,9 @@ class Session(object):
         if -(int(self.allowed_delay)) <= delay <= int(self.allowed_delay):#in seconds!
             log.info('    Line in time, {}s delayed'.format(delay))
             return True
-        elif int(self.max_wait) > delay > int(self.allowed_delay):#in seconds (28800s = 8 hours!)
+        elif int(self.max_wait) > delay > int(self.allowed_delay):#in seconds!)
             log.info(cw+'... Waiting {}s -> {}'.format(delay,exectime)+rc)
-            while exectime > datetime.utcnow():
+            while exectime >= datetime.utcnow():
                 sleep(1)
             return True
         else:
@@ -320,18 +324,40 @@ class Session(object):
             return False
 
 
+    def stop(self):
+        
+        log.info("Setting GLOBAL STATE = 'Off'")
+        self.telescope.park('On') #TODO eval park state!
+        sleep(1)
+        self.telescope.disconnect()
+        sleep(1)
+        self.camera.disconnect()
+        sleep(1)
+        self.filterw.disconnect()
+        sleep(1)
+        
+        
+        
 
 
-    def format_date(self,date):
+
+    def halt(self):
+        return self.halt_flag == True
+
+
+    def _format_date(self,date):
         """ Verify input Date format"""
         try:
-            date = datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
+            date = datetime.strptime(date, '%Y%m%d %H:%M:%S')
             return date
         except ValueError:
             log.error(cr+'ERROR: Incorrect date format, should be YYmmdd H:M:S.'+rc)
             sys.exit()
 
 
+
+def pr(s):
+    print('{}{}{}'.format(cd,s,rc))
 
 
 

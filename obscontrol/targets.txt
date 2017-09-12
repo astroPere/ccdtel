@@ -21,3 +21,4 @@ p2t3 |M15       |Equatorial|e|21:30:00.00 +12:10:00.00|J2000.0
 p2t4 |ZetaPegasi|Equatorial|e|22:41:27.81 +10:49:52.72|J2000.0
 p2t5 |M74       |Equatorial|e|01:36:42.00 +15:47:00.00|J2000.0
 p2t6 |Vega      |Equatorial|e|18:36:56.64 +38:47:06.34|J2000.0
+p2t7 |M15       |Equatorial|e|21:30:00.00 +12:10:00.00|J2000.0

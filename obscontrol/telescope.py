@@ -82,7 +82,8 @@ class Telescope(object):
             #~ sleep(1)
         self.Ut.eval2("EQUATORIAL_EOD_COORD._STATE\"==1")
         sleep(1)
-        log.info('    Done. {} at target position. Wait for telescope settle.'.format(self.tel))
+        log.info('    Done. {} at target position.'.format(self.tel))
+        log.info('    Wait {}s.for telescope settle.'.format(self.settle_timeout))
         sleep(self.settle_timeout)
         
 
