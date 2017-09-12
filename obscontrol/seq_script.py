@@ -19,10 +19,11 @@ from astropy.coordinates import Angle, SkyCoord,FK5,ICRS
 import ConfigParser
 import io
 import sys
-import sequence_parser as seqp
+#~ import sequence_parser as seqp
 import camera as ccd
 import telescope as tel
 import filterwheel as fltw
+from session import Session 
 
 
 rc = '\033[0m' #reset color
@@ -60,8 +61,8 @@ log.addHandler(ch)
 def config():
 
     #~ config_file="config.cfg"
-    #~ config_file="simulator_config.cfg"
-    config_file="gemini_fli_config.cfg"
+    config_file="simulator_config.cfg"
+    #~ config_file="gemini_fli_config.cfg"
     log.info("Loading configuration file: '{}'".format(config_file))
     # Load the configuration file
     with open(config_file) as f:
@@ -130,54 +131,56 @@ def md5Checksum(filePath):
 #~ if not check_indi():
     #~ sys.exit()
 #read config file
-conf = config()
-#Initialize general parameters
-allowed_delay = conf.get('general', 'allowed_delay')
-max_wait = conf.get('general', 'max_wait')
-exec_file = conf.get('general','exec_file')
-execline_conf = conf.get('general', 'exec_conf')
+#~ sess = session.Session("simulator_config.cfg")
+#~ sys.exit()
+#~ conf = config()
+#~ #Initialize general parameters
+#~ allowed_delay = conf.get('general', 'allowed_delay')
+#~ max_wait = conf.get('general', 'max_wait')
+#~ exec_file = conf.get('general','exec_file')
+#~ execline_conf = conf.get('general', 'exec_conf')
 
-# instruments config
-instr_file = conf.get('instruments','data_file')
-instr_conf = conf.get('instruments','data_conf')
-instruments = parsing_config_file(instr_file,instr_conf)
+#~ # instruments config
+#~ instr_file = conf.get('instruments','data_file')
+#~ instr_conf = conf.get('instruments','data_conf')
+#~ instruments = parsing_config_file(instr_file,instr_conf)
 
-# targets config
-targets_file = conf.get('targets','data_file')
-targets_conf = conf.get('targets','data_conf')
-targets = parsing_config_file(targets_file,targets_conf)
+#~ # targets config
+#~ targets_file = conf.get('targets','data_file')
+#~ targets_conf = conf.get('targets','data_conf')
+#~ targets = parsing_config_file(targets_file,targets_conf)
 
-# constrains config
-obsconstr_file = conf.get('obsconstrains','data_file')
-obsconstr_conf = conf.get('obsconstrains','data_conf')
-obsconstrains = parsing_config_file(obsconstr_file,obsconstr_conf)
-
-
-
-
-filters = dict(conf.items('filters'))
-# images output path
-fits_path = conf.get('images','download_path')
+#~ # constrains config
+#~ obsconstr_file = conf.get('obsconstrains','data_file')
+#~ obsconstr_conf = conf.get('obsconstrains','data_conf')
+#~ obsconstrains = parsing_config_file(obsconstr_file,obsconstr_conf)
 
 
 
-#Initialize telescope, camera, filterwheel
-camera = ccd.Camera(name = conf.get('camera','name'),
-                    address = conf.get('camera','address'),
-                    port = conf.get('camera','port'),
-                    timeout = conf.get('camera','timeout'))
 
-telescope = tel.Telescope(name = conf.get('telescope','name'),
-                          address = conf.get('telescope','address'),
-                          port = conf.get('telescope','port'),
-                          timeout = conf.get('telescope','timeout'),
-                          settle_timeout = conf.get('telescope','settle_timeout'))
+#~ filters = dict(conf.items('filters'))
+#~ # images output path
+#~ fits_path = conf.get('images','download_path')
 
-filterw = fltw.FilterWheel(name = conf.get('filterw','name'),
-                           address = conf.get('filterw','address'),
-                           port = conf.get('filterw','port'),
-                           timeout = conf.get('filterw','timeout'),
-                           filters = filters)
+
+
+#~ #Initialize telescope, camera, filterwheel
+#~ camera = ccd.Camera(name = conf.get('camera','name'),
+                    #~ address = conf.get('camera','address'),
+                    #~ port = conf.get('camera','port'),
+                    #~ timeout = conf.get('camera','timeout'))
+
+#~ telescope = tel.Telescope(name = conf.get('telescope','name'),
+                          #~ address = conf.get('telescope','address'),
+                          #~ port = conf.get('telescope','port'),
+                          #~ timeout = conf.get('telescope','timeout'),
+                          #~ settle_timeout = conf.get('telescope','settle_timeout'))
+
+#~ filterw = fltw.FilterWheel(name = conf.get('filterw','name'),
+                           #~ address = conf.get('filterw','address'),
+                           #~ port = conf.get('filterw','port'),
+                           #~ timeout = conf.get('filterw','timeout'),
+                           #~ filters = filters)
 
 
 
@@ -321,40 +324,44 @@ def exec_wait(edatetime):
 
 
 def main(args):
+    session = Session("simulator_config.cfg")
+
+    session.init("2017-09-12 02:41:50")
+    session.exec_lines()
+    sleep(30)
 
     try:
 
         #~ #First of all, check if indiserver is running
-        if not check_indi():
-            sys.exit()
+        #~ if not check_indi():
+            #~ sys.exit()
 
-        #Connect devices to indiserver
-        telescope.connect()### TODO: FIFO connection!!! <---!!!
-        camera.connect()### TODO: FIFO connection!
-        filterw.connect()### TODO: FIFO connection!
+        #~ #Connect devices to indiserver
+        #~ telescope.connect()### TODO: FIFO connection!!! <---!!!
+        #~ camera.connect()### TODO: FIFO connection!
+        #~ filterw.connect()### TODO: FIFO connection!
 
-        #Initial delay to ensure connections are ready
-        sleep(2)
-        #Setting camera upload mode
-        camera.set_upload_mode("BOTH")
-        #Reading properties
+        #~ #Initial delay to ensure connections are ready
+        #~ sleep(2)
+        #~ #Setting camera upload mode
+        #~ camera.set_upload_mode("BOTH")
+        #~ #Reading properties
 
-        telescope.get_all_properties()
-        #~ sleep(1)
-        camera.get_all_properties()
-        #~ sleep(1)
-        filterw.get_all_properties()
-        #Unpark telescope
-        telescope.park('Off') #TODO!!!
-        #Getting present filter
-        filterw.getf
-
+        #~ telescope.get_all_properties()
+        #~ camera.get_all_properties()
+        #~ filterw.get_all_properties()
+        #~ #Unpark telescope
+        #~ telescope.park('Off') #TODO!!!
+        #~ #Getting present filter
+        #~ filterw.getf
+        
     #*******************************************************************
 
         lcount = 0
         with open(exec_file,'r') as f:
             for line in f:
-                 if len(line.strip())>0 and not line.startswith('#'):
+                 #~ if len(line.strip())>0 and not line.startswith('#'):
+                 if line.strip() and not line.startswith('#'):
                     lcount += 1
                     xline=line.strip('\n').strip()
                     xline = parsing_exec_line(xline)

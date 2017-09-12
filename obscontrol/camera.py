@@ -104,12 +104,12 @@ class Camera(object):
 
         log.info('Setting {} files path'.format(adir))
 
-        self.Ut.set2("UPLOAD_SETTINGS.UPLOAD_DIR={}".format(adir))
+        if self.Ut.set2("UPLOAD_SETTINGS.UPLOAD_DIR={}".format(adir)):
         #~ sleep(1)#TODO: refine timeout for telescope hardware!
-        log.debug('    Done. Files path = {} '.format(adir))
-
-        return
-
+            log.debug('    Done. Files path = {} '.format(adir))
+            return 0
+        else:
+            return False
 
 
     def upload_prefix(self,prefix):

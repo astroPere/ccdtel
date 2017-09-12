@@ -32,7 +32,6 @@ address = '127.0.0.1'
 
 a_get  = ["indi_getprop","-h",str(address),"-p",str(port)]
 a_set  = ["indi_setprop","-h",str(address),"-p",str(port)]
-#~ a_set  = ["indi_setprop","-t","30","-h",str(address),"-p",str(port)]
 a_eval = ["indi_eval","-h",str(address),"-p",str(port)]
 
 ##############################################
@@ -41,20 +40,24 @@ a_eval = ["indi_eval","-h",str(address),"-p",str(port)]
 log = logging.getLogger(__name__)
 
 
+# define Python user-defined exceptions
+class Error(Exception):
+   """Base class for other exceptions"""
+   pass
 
-class GetPropertyError(Exception):
+class GetPropertyError(Error):
     pass
 
 
-class SetPropertyError(subprocess.CalledProcessError):
+class SetPropertyError(Error):
     pass
 
 
-class EvalPropertyError(subprocess.CalledProcessError):
+class EvalPropertyError(Error):
     pass
 
 
-class RunCommandError:
+class RunCommandError(Error):
     pass
 
 
@@ -90,11 +93,14 @@ class Utils(object):
         fields ="{}"+ ".{}"*len(prop)
 
         log.debug(("Getting \""+fields+"\" properties").format(self.d,*prop))
-        #~ try:
-        value = (self.run(self._get+[fields.format(
-                 str(self.d),*prop)],check=True).split('='))[-1].strip()
+        try:
+            value = (self.run(self._get+[fields.format(
+                     str(self.d),*prop)],check=True).split('='))[-1].strip()
+            return value
+        except AttributeError:
+            log.error("ERROR: Unable to get {}".format(prop))
+            return False
 
-        return value
 
 
 
@@ -138,32 +144,38 @@ class Utils(object):
         #TODO: Verify timeout value with real hardware
         #~ cmd=self._get+["-t",str(timeout),"{}.*.*".format(str(self.d))]
         cmd=self._get+["-1","{}.*.*".format(str(self.d))] #maybe usefull??
+        try:
+            lines = [msg.split('.',2) for msg in self.run(
+                                        cmd,check=True).strip('\n').split('\n')]
+            if not lines:
+                raise GetPropertyError
+            for key, items in groupby(lines, itemgetter(1)):
+                self.device_properties[key]={}
+                if verbose:
+                    log.info('-'*60)
+                    log.info('{}:'.format(key))
+                else:
+                    log.debug(key)
+                for subitem in items:
+                    self.device_properties[key].update(dict([subitem[-1].split('=')]))
+                if verbose:
+                    for element, value in self.device_properties[key].items():
+                        log.info('    {} = {}'.format(element, value))
+                else:
+                    for element, value in self.device_properties[key].items():
+                        log.debug('   {} = {}'.format(element, value))
 
-        lines = [msg.split('.',2) for msg in self.run(
-                cmd,check=True).strip('\n').split('\n')]
+            log.debug('    Total {} properties = {}.'.format(
+                            self.d,len(self.device_properties)))
 
-        for key, items in groupby(lines, itemgetter(1)):
-            self.device_properties[key]={}
-            if verbose:
-                log.info('-'*60)
-                log.info('{}:'.format(key))
-            else:
-                log.debug(key)
-            for subitem in items:
-                self.device_properties[key].update(dict([subitem[-1].split('=')]))
-            if verbose:
-                for element, value in self.device_properties[key].items():
-                    log.info('    {} = {}'.format(element, value))
-            else:
-                for element, value in self.device_properties[key].items():
-                    log.debug('   {} = {}'.format(element, value))
+            return self.device_properties
 
-        log.debug('    Total {} properties = {}.'.format(
-                        self.d,len(self.device_properties)))
-
-        return self.device_properties
-
-
+        #~ except AttributeError:
+        except AttributeError:
+            log.error(cr+'ERROR: Unable to get all properties'+rc)
+            return False
+            
+            
     def parse_coord(self,coord):
         
         return
