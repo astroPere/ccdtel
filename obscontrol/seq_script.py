@@ -325,12 +325,12 @@ def pr(s):
 def main(args):
 
     try:
-        session = Session("simulator_config.cfg")
+        session = Session("lx200gps.cfg")
 
         #~ session.init("20170912 13:14:50")
         session.init()
         session.exec_lines()
-        sleep(30)
+        sleep(5)
         session.stop()
         #~ #First of all, check if indiserver is running
         #~ if not check_indi():

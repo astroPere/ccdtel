@@ -173,7 +173,7 @@ class Session(object):
         #Setting camera upload mode
         self.camera.set_upload_mode("BOTH")
         #Unpark telescope
-        self.telescope.park('Off') #TODO!!!
+        #self.telescope.park('Off') #TODO!!!
 
 
         
