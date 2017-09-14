@@ -15,11 +15,14 @@ from time import sleep
 from datetime import datetime
 import subprocess
 import re
+
+from astropy import units as u
+from astropy.coordinates import Angle, SkyCoord,FK5,ICRS
+
 import camera as ccd
 import telescope as tel
 import filterwheel as fltw
-from astropy import units as u
-from astropy.coordinates import Angle, SkyCoord,FK5,ICRS
+import focuser as foc
 
 import utils
 
@@ -68,7 +71,7 @@ class Session(object):
         # images output path
         self.fits_path = conf.get('images','download_path')
 
-        #Initialize telescope, camera, filterwheel
+        #Initialize telescope, camera, focuser & filterwheel
         self.camera = ccd.Camera(name = conf.get('camera','name'),
                                  address = conf.get('camera','address'),
                                  port = conf.get('camera','port'),
@@ -79,6 +82,11 @@ class Session(object):
                                  port = conf.get('telescope','port'),
                                  timeout = conf.get('telescope','timeout'),
                                  settle_timeout = conf.get('telescope','settle_timeout'))
+
+        self.focuser  = foc.Focuser(name = conf.get('focuser','name'),
+                                 address = conf.get('focuser','address'),
+                                 port = conf.get('focuser','port'),
+                                 timeout = conf.get('focuser','timeout'))
 
         self.filterw = fltw.FilterWheel(name = conf.get('filterw','name'),
                                  address = conf.get('filterw','address'),
@@ -158,6 +166,7 @@ class Session(object):
             #Connect devices to indiserver
         self.telescope.connect()### TODO: FIFO connection!!! <---!!!
         self.camera.connect()### TODO: FIFO connection!
+        self.focuser.connect()### TODO: FIFO connection!
         self.filterw.connect()### TODO: FIFO connection!
         #~ except:
             #~ log.error(cr+"ERROR: Unable to connect one or more devices"+rc)
@@ -167,6 +176,7 @@ class Session(object):
         #Reading properties
         self.telescope.get_all_properties()
         self.camera.get_all_properties()
+        self.focuser.get_all_properties()
         self.filterw.get_all_properties()
         #Getting present filter
         self.filterw.getf
@@ -327,11 +337,13 @@ class Session(object):
     def stop(self):
         
         log.info("Setting GLOBAL STATE = 'Off'")
-        self.telescope.park('On') #TODO eval park state!
+        #self.telescope.park('On') # NOT SUITABLE FOR LX200!!!
         sleep(1)
         self.telescope.disconnect()
         sleep(1)
         self.camera.disconnect()
+        sleep(1)
+        self.focuser.disconnect()
         sleep(1)
         self.filterw.disconnect()
         sleep(1)
@@ -353,6 +365,23 @@ class Session(object):
         except ValueError:
             log.error(cr+'ERROR: Incorrect date format, should be YYmmdd H:M:S.'+rc)
             sys.exit()
+
+###########################################################
+    def focuser_in(self,steps):
+        self.focuser.move_steps_in(steps)
+        
+    def focuser_out(self,steps):
+        self.focuser.move_steps_out(steps)
+        
+    def focuser_get_pos(self):
+        self.focuser.get_abs_pos()
+        
+    def focuser_set_move(self,mode):
+        self.focuser.set_move_mode(mode)
+
+    def focuser_move_to(self,pos):
+        self.focuser.move_abs_pos(pos)
+###########################################################
 
 
 

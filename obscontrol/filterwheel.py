@@ -91,7 +91,7 @@ class FilterWheel(object):
     @property
     def getf(self):
 
-        log.info('Getting present filter.')
+        log.info('Getting {} present filter.'.format(self.fltw))
 
         try:
             cmd = "FILTER_SLOT.FILTER_SLOT_VALUE"

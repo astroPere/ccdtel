@@ -34,7 +34,8 @@ class Camera(object):
         self.ccd = kargs['name']
         self.adress = kargs['address']
         self.port = kargs['port']
-        self.timeout = str(kargs['timeout'])
+        #~ self.timeout = str(kargs['timeout'])
+        self.timeout = float(kargs['timeout'])
         self.ccd_properties = {}
 
     def connect(self):
@@ -114,7 +115,7 @@ class Camera(object):
 
     def upload_prefix(self,prefix):
 
-        prefix = prefix+'imr_XXX' #Should be defined at main control application ?
+        prefix = prefix+'_XXX' #Should be defined at main control application ?
 
         log.info('Setting {} files prefix'.format(prefix))
 
@@ -150,7 +151,7 @@ class Camera(object):
 
 
     def get_all_properties(self,timeout=2.0,verbose=False):
-        timeout = self.timeout
+        timeout = str(self.timeout)
         return self.Ut.get_all_properties(timeout, verbose)
 
 
