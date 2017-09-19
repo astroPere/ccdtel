@@ -23,6 +23,7 @@ import camera as ccd
 import telescope as tel
 import filterwheel as fltw
 import focuser as foc
+import phdclient as phd
 
 import utils
 
@@ -93,7 +94,12 @@ class Session(object):
                                  port = conf.get('filterw','port'),
                                  timeout = conf.get('filterw','timeout'),
                                  filters = self.filters)
-
+        
+        self.phd2 = phd.PhdClient(address = conf.get('phd2','address'),
+                                 port = conf.get('phd2','port'),
+                                 timeout = conf.get('phd2','timeout'),
+                                 phd_id = conf.get('phd2','phd_id'))
+        
         self.halt_flag = False
         
         

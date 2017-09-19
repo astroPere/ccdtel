@@ -31,7 +31,7 @@ class Telescope(object):
         
         self.Ut = utils.Utils(kargs['name'])
         self.tel = kargs['name']
-        self.adress = kargs['address']
+        self.address = kargs['address']
         self.port = kargs['port']
         self.timeout = float(kargs['timeout'])
         self.settle_timeout = float(kargs['settle_timeout'])

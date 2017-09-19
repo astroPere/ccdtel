@@ -88,33 +88,43 @@ def main(args):
         #~ session.init("20170912 13:14:50")
         session.init()
         #~ session.exec_lines()
-        pr("...sleeping 3...")
-        sleep(3)
-        
-        session.focuser_get_pos()
-        session.focuser_move_to(22000)
-        session.focuser_get_pos()
+        #~ pr("...sleeping 3...")
+        #~ sleep(3)
+        session.phd2.equipment("On")
+        #~ session.phd2.pause("Off",full=True)
+        sleep(2)
+        session.phd2.single_capture()
+        sleep(5)
+        session.phd2.select_star()
+        sleep(5)
+        session.phd2.app_state()
+        sleep(1)
+        session.phd2.loop()
+        #~ session.focuser_get_pos()
+        #~ session.focuser_move_to(22000)
+        #~ session.focuser_get_pos()
         #~ session.focuser_set_move("OUT")
 
-        session.focuser_in(500)
+        #~ session.focuser_in(500)
 
-        session.focuser_get_pos()
+        #~ session.focuser_get_pos()
 
-        session.focuser_out(1500)
+        #~ session.focuser_out(1500)
 
-        session.focuser_get_pos()
+        #~ session.focuser_get_pos()
 
-        session.focuser_move_to(18000)
-        sleep(5)
-        session.stop()
+        #~ session.focuser_move_to(18000)
+        #~ sleep(5)
+        #~ session.stop()
 
 
     except(KeyboardInterrupt,SystemExit):
         log.warning(cw+"TELESCOPE HALTED!"+rc)
         session.telescope.halt
-        session.telescope.disconnect()
-        session.camera.disconnect()
-        session.filterw.disconnect()
+        session.stop()
+        #~ session.telescope.disconnect()
+        #~ session.camera.disconnect()
+        #~ session.filterw.disconnect()
         #~ raise
 
 
