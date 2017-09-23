@@ -175,11 +175,6 @@ class Utils(object):
             log.error(cr+'ERROR: Unable to get all properties'+rc)
             return False
             
-            
-    def parse_coord(self,coord):
-        
-        return
-
 
 
     #dummy funtion ;)

@@ -24,6 +24,7 @@ import telescope as tel
 import filterwheel as fltw
 import focuser as foc
 import phdclient as phd
+import wcssolver as wcs
 
 import utils
 
@@ -66,6 +67,7 @@ class Session(object):
         obsconstr_conf = conf.get('obsconstrains','data_conf')
         self.obsconstrains = self._parsing_config_file(obsconstr_file,obsconstr_conf)
 
+
         #filters/slots config
         self.filters = dict(conf.items('filters'))
 
@@ -99,6 +101,17 @@ class Session(object):
                                  port = conf.get('phd2','port'),
                                  timeout = conf.get('phd2','timeout'),
                                  phd_id = conf.get('phd2','phd_id'))
+                                 
+        self.wcs = wcs.WcsSolver(pix_res = conf.get('wcssolver','pix_res'),
+                                 search_rad = conf.get('wcssolver','search_rad'),
+                                 ra_header = conf.get('wcssolver','ra_header'),
+                                 dec_header = conf.get('wcssolver','dec_header'),
+                                 sampling = conf.get('wcssolver','sampling'),
+                                 sigma = conf.get('wcssolver','sigma'),
+                                 indexes = conf.get('wcssolver','indexes'),
+                                 prefix = conf.get('wcssolver','prefix'),
+                                 ipath = conf.get('wcssolver','ipath'))
+                                 
         
         self.halt_flag = False
         

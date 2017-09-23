@@ -127,6 +127,28 @@ class Telescope(object):
         log.info("    Done. {}  PARK = '{}'.".format(self.tel,park))
 
 
+        
+        
+        
+    def sync_coord(self,coord):
+        
+        log.info('Syncronicing Coordinates: {}.'.format(coord))
+
+        
+        cmd1 = ["{}.ON_COORD_SET.TRACK=Off;SLEW=Off;SYNC=On".format(self.tel)]
+        cmd = self.Ut._set + cmd1
+        self.Ut.run(cmd)#TODO: refine timeout for telescope hardware!
+        sleep(self.timeout)
+        
+        cmd1 = ["{}.ON_COORD_SET.TRACK=On;SLEW=Off;SYNC=Off".format(self.tel)]
+        cmd = self.Ut._set + cmd1
+        self.Ut.run(cmd)#TODO: refine timeout for telescope hardware!
+        sleep(self.timeout)
+        
+        log.info("    Done. RA,DEC = '{}'.".format(coord))
+        
+
+
 
     def get_all_properties(self,timeout=2.0,verbose=False):
         timeout = self.timeout

@@ -85,9 +85,10 @@ class Camera(object):
         subprocess.check_call(cmd2)
 
         log.info('    Exposure finished.')
-        log.info('    File {}{}{} succesfully created.'.format(cy,self.Ut.lastest_file(path),rc))
+        image = self.Ut.lastest_file(path)
+        log.info('    File {}{}{} succesfully created.'.format(cy,image,rc))
 
-        return
+        return image
 
 
     def set_filter(self,afilter):
