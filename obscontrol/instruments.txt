@@ -14,7 +14,7 @@
 #-----------------------------------------------------------
 # 1       2      3        4     5     6   7   8   9   10
 #-----------------------------------------------------------
-p1i1  |FLI CDD|Science|Sidereal|2  |   5|0  |1x1|2048|B
+p1i1  |FLI CDD|Science|Sidereal|1  |   5|0  |1x1|2048|B
 p1i10 |FLI CDD|Science|Sidereal|3  |  10|0  |1x1|2048|B
-p2i2  |FLI CCD|Science|Sidereal|2  |   5|0  |2x2|2048|R
+p2i2  |FLI CCD|Science|Sidereal|1  |  15|0  |2x2|2048|R
 p2i20 |FLI CCD|Science|Sidereal|3  |  10|0  |2x2|2048|R

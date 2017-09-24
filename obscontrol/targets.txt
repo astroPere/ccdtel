@@ -14,7 +14,7 @@ p1t1 |Gam01_And |Equatorial|e|02:03:54.02 +42:19:46.11|J2000.0
 p1t2 |Capella   |Equatorial|e|05:16:41.48 +45:59:45.22|J2000.0
 p1t3 |M110      |Equatorial|e|00:40:24.00 +41:41:00.00|J2000.0
 p1t4 |GamPegasi |Equatorial|e|00:13:14.15 +15:11:00.78|J2000.0
-p1t5 |Altair    |Equatorial|e|19:50:47.63 +08:52:12.77|J2000.0
+p1t5 |M57       |Equatorial|e|18:53:36.00 +33:02:00.00|J2000.0
 p2t1 |M31       |Equatorial|e|00:42:42.00 +41:16:00.00|J2000.0
 p2t2 |M36       |Equatorial|e|05:36:18.00 +34:08.00.00|J2000.0
 p2t3 |M15       |Equatorial|e|21:30:00.00 +12:10:00.00|J2000.0

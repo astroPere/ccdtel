@@ -88,7 +88,8 @@ class WcsSolver(object):
         not_solved = []
         solved = []
         for image in sorted(dirc):
-            print ('-'*40)
+            print (cw,'-'*40,rc)
+            print(cw,image,rc)
             img_hdulist = fits.open(image)
             img_hdr = img_hdulist[0].header
             RA = img_hdr[str(self.ra_header)]
@@ -124,8 +125,6 @@ class WcsSolver(object):
                 '-H',PixResHi,
                 '--sigma',Sigma]
 
-            #~ self.textBrowser.setText(' '.join(proces))
-
             proces.append(OutImg)
             print(cw+proc)
             proc=subprocess.Popen(proces,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
@@ -135,7 +134,7 @@ class WcsSolver(object):
             print('Solving WCS...')
             while True:
                 a=proc.stdout.readline()
-                print(cw+a.strip('\n')+rc)
+                #~ print(cw+a.strip('\n')+rc)
                 if a == '':
                     break
                 #~ print a.strip('\n')
@@ -162,7 +161,7 @@ class WcsSolver(object):
                     
             shutil.rmtree(OutDir)
             
-        return solved_pos.ra,solved_pos.dec
+        return str(solved_pos.ra.hour),str(solved_pos.dec.degree)
         #~ print '----------------------------------------------------------------------------'
         #~ print '>','%2.2f' % (time.time() - t1)
 

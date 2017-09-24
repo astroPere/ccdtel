@@ -6,6 +6,9 @@ from __future__ import print_function
 Command INDI Telescope with indi_setprop, indi_getprop & indi_eval
 
 """
+from astropy import units as u
+from astropy.coordinates import Angle, SkyCoord,FK5,ICRS
+from datetime import datetime
 
 import logging
 from time import sleep
@@ -130,7 +133,7 @@ class Telescope(object):
         
         
         
-    def sync_coord(self,coord):
+    def sync_coord(self,coord,equinox='J2000.0'):
         
         log.info('Syncronicing Coordinates: {}.'.format(coord))
 
@@ -139,6 +142,12 @@ class Telescope(object):
         cmd = self.Ut._set + cmd1
         self.Ut.run(cmd)#TODO: refine timeout for telescope hardware!
         sleep(self.timeout)
+        
+        atarget = SkyCoord(*coord,unit=(u.hourangle, u.deg),
+                           equinox=equinox)
+        otarget = atarget.transform_to(FK5(equinox=datetime.utcnow()))
+        
+        self.target_coord(otarget.ra.hour, otarget.dec.degree)
         
         cmd1 = ["{}.ON_COORD_SET.TRACK=On;SLEW=Off;SYNC=Off".format(self.tel)]
         cmd = self.Ut._set + cmd1
@@ -154,7 +163,18 @@ class Telescope(object):
         timeout = self.timeout
         return self.Ut.get_all_properties(timeout, verbose)
 
+    def _coord2EOD(self,atarget,equinox):
 
+        log.debug('Parsing EOD coords. targ={}'.format(atarget))
+        #coordinates from targets file
+        atarget = SkyCoord(atarget.coord_value,
+                           unit=(u.hourangle, u.deg),
+                           equinox=atarget.equinox)
+        #coordinates EOD (UTC now)
+        otarget = atarget.transform_to(FK5(equinox=datetime.utcnow()))
+        log.debug('Returned coords.RA:{} DEC:{}'.format(
+                  otarget.ra.hour, otarget.dec.degree))
+        return otarget.ra.hour, otarget.dec.degree
 
 
     @property

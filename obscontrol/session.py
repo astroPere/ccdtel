@@ -197,7 +197,7 @@ class Session(object):
         self.camera.get_all_properties()
         self.focuser.get_all_properties()
         self.filterw.get_all_properties()
-        #Getting present filter
+        #~ #Getting present filter
         self.filterw.getf
         #Setting camera upload mode
         self.camera.set_upload_mode("BOTH")
@@ -290,7 +290,7 @@ class Session(object):
     def expose(self,i):
 
         log.debug('Executing expose={}'.format(i))
-
+        image = ''
         i_instr = self._pstoi(i,'pi')
         ainstr = next(ins for ins in self.instruments if self._pstoi(ins.ID,'pi')==i_instr)
         i_targ = self._pstoi(i,'pt')
@@ -302,8 +302,9 @@ class Session(object):
         self.filterw.setf(ainstr.ifilter)
 
         for x in range(int(ainstr.exposures)):
-            self.camera.expose(float(ainstr.exp_time),x+1,ainstr.exposures)
-
+            image = self.camera.expose(float(ainstr.exp_time),x+1,ainstr.exposures)
+        return image
+        
 
     def _coord2EOD(self,atarget,equinox):
 

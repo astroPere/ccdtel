@@ -82,18 +82,21 @@ def pr(s):
 def main(args):
 
     try:
-        #~ session = Session("lx200gps.cfg")
-        session = Session("simulator_config.cfg")
+        session = Session("lx200gps.cfg")
+        #~ session = Session("simulator_config.cfg")
 
         #~ session.init("20170912 13:14:50")
         session.init()
         
         #~ session.exec_lines()
         #~ pr("...sleeping 3...")
-        sleep(3)
-        session.telescope.target_coord(0.5,0.5)
+        #~ sleep(3)
+        img = session.exec_lines()
+        #~ session.telescope.target_coord(0.5,0.5)
         image = session.camera.expose()
-        session.wcs.solve(image)
+        #~ image = '/home/a02/fits/rawdata/M57/_M57__006.fits'
+        img_coord = session.wcs.solve(image)
+        session.telescope.sync_coord(img_coord)
         #~ session.phd2.equipment("On")
         #~ session.phd2.pause("Off",full=True)
         #~ sleep(2)
